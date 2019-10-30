@@ -1,6 +1,6 @@
 /*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2017/05
+Programmer: Flaming Papayas
+Date: 2019/11
 ----------------------------------------------*/
 #ifndef __GLFWAPPCLASS_H_
 #define __GLFWAPPCLASS_H_

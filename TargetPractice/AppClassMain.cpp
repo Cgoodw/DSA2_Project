@@ -1,4 +1,4 @@
-#include "AppClass.h"
+#include "pch.h"
 GLFWApp* GLFWApp::m_pSelfPointer = nullptr;
 GLFWApp::GLFWApp() {}
 GLFWApp::GLFWApp(GLFWApp const& input) {}

@@ -1,4 +1,4 @@
-#include "AppClass.h"
+#include "pch.h"
 void GLFWApp::InitVariables(void)
 {
 	//setup camera position

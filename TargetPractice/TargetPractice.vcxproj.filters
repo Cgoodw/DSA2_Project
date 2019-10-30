@@ -27,12 +27,18 @@
     <ClCompile Include="AppClassMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Let%27sGoPens\source\repos\DSA2_Project\TargetPractice\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AppClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Let%27sGoPens\source\repos\DSA2_Project\TargetPractice\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
