@@ -9,9 +9,11 @@ void GLFWApp::InitVariables(void)
 
 	m_bFPC = true;
 	//init variables
-	m_pModel = new Simplex::Model();
+	//m_pModel = new Simplex::Model();
+	bullet = new Simplex::Model();
 	//load model
-	m_pModel->Load("Lego\\Unikitty.BTO");
+	//m_pModel->Load("Lego\\Unikitty.BTO");
+	bullet->Load("Lego\\Unikitty.BTO");
 }
 void GLFWApp::Update(void)
 {
@@ -44,9 +46,22 @@ void GLFWApp::Display(void)
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
 	m_pMeshMngr->AddSkyboxToRenderList();
 	//set the model matrix of the model
-	m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));
+	//m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));
 	//play the default sequence of the model
-	m_pModel->PlaySequence();
+	//m_pModel->PlaySequence();
+
+	if (renderBullet)
+	{
+		if (!addedBullet)
+		{	
+			bullet->AddToRenderList();
+			addedBullet = true;
+		}
+			
+		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
+		bullet->PlaySequence();
+	}
+
 	//render list call
 	m_pMeshMngr->Render();
 	//clear the render list
@@ -60,5 +75,6 @@ void GLFWApp::Display(void)
 void GLFWApp::Release(void)
 {
 	//release variables
-	SafeDelete(m_pModel);
+	//SafeDelete(m_pModel);
+	SafeDelete(bullet);
 }

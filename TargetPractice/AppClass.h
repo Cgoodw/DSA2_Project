@@ -25,7 +25,11 @@ class GLFWApp
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
 	
-	Simplex::Model* m_pModel = nullptr; //Model to try
+	//Simplex::Model* m_pModel = nullptr; //Model to try
+	Simplex::Model* bullet = nullptr; //Model to try
+
+	bool renderBullet = false;
+	bool addedBullet = false;
 
 public:
 	static GLFWApp* m_pSelfPointer; //Used for callbacks
