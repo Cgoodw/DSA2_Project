@@ -13,7 +13,16 @@ void GLFWApp::InitVariables(void)
 	bullet = new Simplex::Model();
 	//load model
 	//m_pModel->Load("Lego\\Unikitty.BTO");
-	bullet->Load("Lego\\Unikitty.BTO");
+	bullet->Load("bullet.FBX");
+
+
+	building = new Simplex::Model();
+
+	//building->Load("Models\\groundModel.OBJ");
+	//building->Load("Models\\SceneTextured.OBJ");
+	building->Load("interior.FBX");
+
+	
 }
 void GLFWApp::Update(void)
 {
@@ -62,6 +71,11 @@ void GLFWApp::Display(void)
 		bullet->PlaySequence();
 	}
 
+	building->AddToRenderList();
+	building->SetModelMatrix(ToMatrix4(m_qArcBall));
+	building->PlaySequence();
+
+
 	//render list call
 	m_pMeshMngr->Render();
 	//clear the render list
@@ -77,4 +91,5 @@ void GLFWApp::Release(void)
 	//release variables
 	//SafeDelete(m_pModel);
 	SafeDelete(bullet);
+	SafeDelete(building);
 }
