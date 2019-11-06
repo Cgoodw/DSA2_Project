@@ -30,6 +30,8 @@ class GLFWApp
 
 	Simplex::Model* building = nullptr;
 
+	Simplex::Model* crate = nullptr;
+
 
 	bool renderBullet = false;
 	bool addedBullet = false;
