@@ -23,11 +23,18 @@ void GLFWApp::InitVariables(void)
 	building->Load("interior.FBX");
 
 	
+	crate = new Simplex::Model();
+	crate->Load("crate.FBX");
+
+
 }
 void GLFWApp::Update(void)
 {
 	//Take screen changes in account
 	Reshape();
+
+	//attempting to get the camera to lock its y position
+	//m_pCameraMngr->SetPosition(vector3(m_pCameraMngr->GetPosition().x, 2.0f, m_pCameraMngr->GetPosition().z));
 
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
@@ -76,6 +83,18 @@ void GLFWApp::Display(void)
 	building->PlaySequence();
 
 
+	
+
+
+	matrix4 m4Translate;
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 2 , 5));
+
+	crate->AddToRenderList();
+	crate->SetModelMatrix(m4Translate);
+	crate->PlaySequence();
+
+
+
 	//render list call
 	m_pMeshMngr->Render();
 	//clear the render list
@@ -92,4 +111,5 @@ void GLFWApp::Release(void)
 	//SafeDelete(m_pModel);
 	SafeDelete(bullet);
 	SafeDelete(building);
+	SafeDelete(crate);
 }
