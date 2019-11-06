@@ -15,7 +15,6 @@ void GLFWApp::InitVariables(void)
 	//m_pModel->Load("Lego\\Unikitty.BTO");
 	bullet->Load("bullet.FBX");
 
-
 	building = new Simplex::Model();
 
 	//building->Load("Models\\groundModel.OBJ");
@@ -61,6 +60,12 @@ void GLFWApp::Display(void)
 
 	if (renderBullet)
 	{
+		/*POINT pt;
+		GetCursorPos(&pt);
+		UINT MouseX = pt.x;
+		UINT MouseY = pt.y;
+		matrix4 position = glm::translate(IDENTITY_M4, vector3(MouseX, MouseY, -1));*/
+		
 		if (!addedBullet)
 		{	
 			bullet->AddToRenderList();
@@ -68,6 +73,7 @@ void GLFWApp::Display(void)
 		}
 			
 		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
+		//bullet->SetModelMatrix(position);
 		bullet->PlaySequence();
 	}
 
