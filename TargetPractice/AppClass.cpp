@@ -25,6 +25,15 @@ void GLFWApp::InitVariables(void)
 	crate = new Simplex::Model();
 	crate->Load("crate.FBX");
 
+	crateB = new Simplex::Model();
+	crateB->Load("crate.FBX");
+
+	crateC = new Simplex::Model();
+	crateC->Load("crate.FBX");
+
+	crateD = new Simplex::Model();
+	crateD->Load("crate.FBX");
+
 
 }
 void GLFWApp::Update(void)
@@ -79,6 +88,8 @@ void GLFWApp::Display(void)
 			addedBullet = true;
 		}
 			
+
+
 		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
 		//bullet->SetModelMatrix(position);
 		bullet->PlaySequence();
@@ -90,14 +101,32 @@ void GLFWApp::Display(void)
 
 
 	
-
+	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 	matrix4 m4Translate;
-	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 2 , 5));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
+	
 
 	crate->AddToRenderList();
-	crate->SetModelMatrix(m4Translate);
+	crate->SetModelMatrix(m4Scale * m4Translate);
 	crate->PlaySequence();
+
+	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1, 20));
+	crateB->AddToRenderList();
+	crateB->SetModelMatrix(m4Scale * m4Translate);
+	crateB->PlaySequence();
+
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1, 15));
+
+	crateC->AddToRenderList();
+	crateC->SetModelMatrix(m4Scale * m4Translate);
+	crateC->PlaySequence();
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, -40));
+
+	crateD->AddToRenderList();
+	crateD->SetModelMatrix(m4Scale * m4Translate);
+	crateD->PlaySequence();
+
 
 
 
