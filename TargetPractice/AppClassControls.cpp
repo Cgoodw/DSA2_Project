@@ -14,9 +14,7 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 	float fSpeed = 0.25f;
 	
 	if (key == GLFW_KEY_W)
-	{
-		m_pCameraMngr->MoveForward(fSpeed, -1);
-	}
+		m_pCameraMngr->MoveForward(fSpeed);
 
 	if (key == GLFW_KEY_S)
 		m_pCameraMngr->MoveForward(-fSpeed);
@@ -26,12 +24,12 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 
 	if (key == GLFW_KEY_D)
 		m_pCameraMngr->MoveSideways(fSpeed);
-
+	//
 	//if (key == GLFW_KEY_Q)
-		//m_pCameraMngr->MoveVertical(-fSpeed);
-
+	//	m_pCameraMngr->MoveVertical(-fSpeed);
+	//
 	//if (key == GLFW_KEY_E)
-		//m_pCameraMngr->MoveVertical(fSpeed);
+	//	m_pCameraMngr->MoveVertical(fSpeed);
 #pragma endregion
 }
 //Mouse

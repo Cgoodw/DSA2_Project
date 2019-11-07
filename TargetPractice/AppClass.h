@@ -28,6 +28,11 @@ class GLFWApp
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 	Simplex::Model* bullet = nullptr; //Model to try
 
+	Simplex::Model* building = nullptr;
+
+	Simplex::Model* crate = nullptr;
+
+
 	bool renderBullet = false;
 	bool addedBullet = false;
 

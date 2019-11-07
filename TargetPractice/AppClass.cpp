@@ -13,12 +13,27 @@ void GLFWApp::InitVariables(void)
 	bullet = new Simplex::Model();
 	//load model
 	//m_pModel->Load("Lego\\Unikitty.BTO");
-	bullet->Load("Lego\\Unikitty.BTO");
+	bullet->Load("bullet.FBX");
+
+	building = new Simplex::Model();
+
+	//building->Load("Models\\groundModel.OBJ");
+	//building->Load("Models\\SceneTextured.OBJ");
+	building->Load("interior.FBX");
+
+	
+	crate = new Simplex::Model();
+	crate->Load("crate.FBX");
+
+
 }
 void GLFWApp::Update(void)
 {
 	//Take screen changes in account
 	Reshape();
+
+	//attempting to get the camera to lock its y position
+	//m_pCameraMngr->SetPosition(vector3(m_pCameraMngr->GetPosition().x, 2.0f, m_pCameraMngr->GetPosition().z));
 
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
@@ -52,6 +67,12 @@ void GLFWApp::Display(void)
 
 	if (renderBullet)
 	{
+		/*POINT pt;
+		GetCursorPos(&pt);
+		UINT MouseX = pt.x;
+		UINT MouseY = pt.y;
+		matrix4 position = glm::translate(IDENTITY_M4, vector3(MouseX, MouseY, -1));*/
+		
 		if (!addedBullet)
 		{	
 			bullet->AddToRenderList();
@@ -59,8 +80,26 @@ void GLFWApp::Display(void)
 		}
 			
 		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
+		//bullet->SetModelMatrix(position);
 		bullet->PlaySequence();
 	}
+
+	building->AddToRenderList();
+	building->SetModelMatrix(ToMatrix4(m_qArcBall));
+	building->PlaySequence();
+
+
+	
+
+
+	matrix4 m4Translate;
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 2 , 5));
+
+	crate->AddToRenderList();
+	crate->SetModelMatrix(m4Translate);
+	crate->PlaySequence();
+
+
 
 	//render list call
 	m_pMeshMngr->Render();
@@ -77,4 +116,6 @@ void GLFWApp::Release(void)
 	//release variables
 	//SafeDelete(m_pModel);
 	SafeDelete(bullet);
+	SafeDelete(building);
+	SafeDelete(crate);
 }
