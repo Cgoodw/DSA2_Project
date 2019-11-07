@@ -1,3 +1,3 @@
-D:/Profiles/iki8334/source/repos/DSA2_Project/include/glm/out/build/x64-Debug/CMakeFiles/glm_dummy.dir
-D:/Profiles/iki8334/source/repos/DSA2_Project/include/glm/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-D:/Profiles/iki8334/source/repos/DSA2_Project/include/glm/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+X:/VSRepos/DSA2project/include/glm/out/build/x64-Debug/CMakeFiles/glm_dummy.dir
+X:/VSRepos/DSA2project/include/glm/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+X:/VSRepos/DSA2project/include/glm/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
