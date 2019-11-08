@@ -29,13 +29,25 @@ class GLFWApp
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 
+	//TODO: Make these into a list
+	//building the scene
 	Simplex::Model* building = nullptr;
+
+	Simplex::Model* barrel = nullptr;
+	Simplex::Model* barrelB = nullptr;
 
 	Simplex::Model* crate = nullptr;
 	Simplex::Model* crateB = nullptr;
 	Simplex::Model* crateC = nullptr;
 	Simplex::Model* crateD = nullptr;
 
+
+	//scene vars
+	int ammo = 30;
+
+
+
+	//bullets
 	std::vector<Entity*> bullets = std::vector<Entity*>();
 	std::vector<vector3> bulletFwdVecs = std::vector<vector3>();
 

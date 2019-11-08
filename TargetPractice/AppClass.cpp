@@ -17,6 +17,8 @@ void GLFWApp::InitVariables(void)
 	//building->Load("Models\\SceneTextured.OBJ");
 	building->Load("interior.FBX");
 
+
+	//TODO: Make these into lists and position them
 	
 	crate = new Simplex::Model();
 	crate->Load("crate.FBX");
@@ -31,6 +33,14 @@ void GLFWApp::InitVariables(void)
 	crateD->Load("crate.FBX");
 
 
+	barrel = new Simplex::Model();
+	barrel->Load("barrel.FBX");
+
+	barrelB = new Simplex::Model();
+	barrelB->Load("barrel.FBX");
+
+
+	int ammo = 30;
 }
 void GLFWApp::Update(void)
 {
@@ -55,10 +65,30 @@ void GLFWApp::Update(void)
 	//print info into the console
 	printf("FPS: %d            \r", nFPS);//print the Frames per Second
 	//Print info on the screen
-	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
+	m_pMeshMngr->Print(m_pSystem->GetAppName(), C_YELLOW);
+	m_pMeshMngr->PrintLine("         Shoot the Targets!", C_GREEN);
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(nFPS), C_RED);
+	m_pMeshMngr->Print(std::to_string(nFPS), C_YELLOW);
 
+	//Everything below this is garbage
+	
+
+	//absolutely degenerate way to do this but idk how else
+	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n");
+
+	if (ammo < 1) {
+		m_pMeshMngr->Print("                                OUT OF AMMO", C_RED);
+	}
+
+	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n\n\n");
+	m_pMeshMngr->Print( "   AMMO: ", C_RED);
+	m_pMeshMngr->Print(std::to_string(ammo), C_RED);
+
+	//garbage ended
+
+
+
+	//list of bullets
 	if (bullets.size()>0)
 	{
 		for (int i = 0; i< bullets.size(); i++)
@@ -90,9 +120,12 @@ void GLFWApp::Display(void)
 
 
 	
+	//set the scale matrix to shrink all the models
 	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 	matrix4 m4Translate;
+
+	//change position for each one
 	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
 	
 
@@ -116,7 +149,21 @@ void GLFWApp::Display(void)
 	crateD->SetModelMatrix(m4Scale * m4Translate);
 	crateD->PlaySequence();
 
+	//scale barrels even more
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
 
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
+
+	barrel->AddToRenderList();
+	barrel->SetModelMatrix(m4Scale * m4Translate);
+	barrel->PlaySequence();
+
+
+	m4Translate = glm::translate(IDENTITY_M4, vector3( 30, 1, 20));
+
+	barrelB->AddToRenderList();
+	barrelB->SetModelMatrix(m4Scale * m4Translate);
+	barrelB->PlaySequence();
 
 
 	//render list call
@@ -145,6 +192,10 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 
 	//add fwd vec to list
 	bulletFwdVecs.push_back(fwd);
+
+
+	//subtract Ammo
+	ammo -= 1;
 }
 
 void GLFWApp::Release(void)
@@ -158,4 +209,9 @@ void GLFWApp::Release(void)
 	}
 	SafeDelete(building);
 	SafeDelete(crate);
+	SafeDelete(crateB);
+	SafeDelete(crateC);
+	SafeDelete(crateD);
+	SafeDelete(barrel);
+	SafeDelete(barrelB);
 }
