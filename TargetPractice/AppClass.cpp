@@ -8,12 +8,8 @@ void GLFWApp::InitVariables(void)
 		AXIS_Y);//What is up
 
 	m_bFPC = true;
-	//init variables
-	//m_pModel = new Simplex::Model();
-	bullet = new Simplex::Model();
-	//load model
-	//m_pModel->Load("Lego\\Unikitty.BTO");
-	bullet->Load("bullet.FBX");
+
+	//load models
 
 	building = new Simplex::Model();
 
@@ -24,8 +20,6 @@ void GLFWApp::InitVariables(void)
 	
 	crate = new Simplex::Model();
 	crate->Load("crate.FBX");
-
-
 }
 void GLFWApp::Update(void)
 {
@@ -53,6 +47,16 @@ void GLFWApp::Update(void)
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), C_RED);
+
+	if (bullets.size()>0)
+	{
+		for (int i = 0; i< bullets.size(); i++)
+		{
+			//b->ApplyForce(vector3(0, gravity, 0));
+			matrix4 position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
+			bullets[i]->SetModelMatrix(position);
+		}
+	}
 }
 void GLFWApp::Display(void)
 {
@@ -60,37 +64,18 @@ void GLFWApp::Display(void)
 	ClearScreen();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
 	m_pMeshMngr->AddSkyboxToRenderList();
-	//set the model matrix of the model
-	//m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));
-	//play the default sequence of the model
-	//m_pModel->PlaySequence();
 
-	if (renderBullet)
+	if (bullets.size()>0)
 	{
-		/*POINT pt;
-		GetCursorPos(&pt);
-		UINT MouseX = pt.x;
-		UINT MouseY = pt.y;
-		matrix4 position = glm::translate(IDENTITY_M4, vector3(MouseX, MouseY, -1));*/
-		
-		if (!addedBullet)
-		{	
-			bullet->AddToRenderList();
-			addedBullet = true;
+		for each (Entity* b in bullets)
+		{
+			b->AddToRenderList();
 		}
-			
-		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
-		//bullet->SetModelMatrix(position);
-		bullet->PlaySequence();
 	}
 
 	building->AddToRenderList();
 	building->SetModelMatrix(ToMatrix4(m_qArcBall));
 	building->PlaySequence();
-
-
-	
-
 
 	matrix4 m4Translate;
 	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 2 , 5));
@@ -98,8 +83,6 @@ void GLFWApp::Display(void)
 	crate->AddToRenderList();
 	crate->SetModelMatrix(m4Translate);
 	crate->PlaySequence();
-
-
 
 	//render list call
 	m_pMeshMngr->Render();
@@ -111,11 +94,33 @@ void GLFWApp::Display(void)
 	glfwPollEvents();
 }
 
+void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd) 
+{
+	//create bullet
+	Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
+
+	//at current mouse position
+	matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y-4, pos.z)); //-4 would be exact camera position for y
+	
+	bullet->SetModelMatrix(position);
+	bullet->AddToRenderList();
+
+	//add to list
+	bullets.push_back(bullet);
+
+	//add fwd vec to list
+	bulletFwdVecs.push_back(fwd);
+}
+
 void GLFWApp::Release(void)
 {
 	//release variables
-	//SafeDelete(m_pModel);
-	SafeDelete(bullet);
+	
+	//delete all bullets
+	for each(Entity* b in bullets)
+	{
+		SafeDelete(b);
+	}
 	SafeDelete(building);
 	SafeDelete(crate);
 }
