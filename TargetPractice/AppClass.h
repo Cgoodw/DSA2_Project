@@ -12,6 +12,8 @@ using namespace Simplex;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
+
+
 class GLFWApp
 {
 	bool m_bFPC = false;// First Person Camera flag
@@ -30,6 +32,9 @@ class GLFWApp
 	Simplex::Model* building = nullptr;
 
 	Simplex::Model* crate = nullptr;
+	Simplex::Model* crateB = nullptr;
+	Simplex::Model* crateC = nullptr;
+	Simplex::Model* crateD = nullptr;
 
 	std::vector<Entity*> bullets = std::vector<Entity*>();
 	std::vector<vector3> bulletFwdVecs = std::vector<vector3>();
