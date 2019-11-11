@@ -14,10 +14,12 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 	float fSpeed = 0.25f;
 	
 	if (key == GLFW_KEY_W)
-		m_pCameraMngr->MoveForward(fSpeed);
+		mainCamera->MoveForward(fSpeed);
+		//m_pCameraMngr->MoveForward(fSpeed);
 
 	if (key == GLFW_KEY_S)
-		m_pCameraMngr->MoveForward(-fSpeed);
+		mainCamera->MoveForward(-fSpeed);
+		//m_pCameraMngr->MoveForward(-fSpeed);
 
 	if (key == GLFW_KEY_A)
 		m_pCameraMngr->MoveSideways(-fSpeed);

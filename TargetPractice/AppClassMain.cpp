@@ -56,7 +56,7 @@ void GLFWApp::Init(void)
 	//Init Simplex basic Systems
 	m_pSystem = SystemSingleton::GetInstance();
 	m_pMeshMngr = MeshManager::GetInstance();
-	m_pCameraMngr = CameraManager::GetInstance();
+	m_pCameraMngr = Simplex::CameraManager::GetInstance();
 	//Change size of render target
 	Reshape();
 	//Init App variables

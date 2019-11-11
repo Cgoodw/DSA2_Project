@@ -1,6 +1,9 @@
 #include "pch.h"
 void GLFWApp::InitVariables(void)
 {
+	//setup MyCamera
+	mainCamera = new MyCamera();
+
 	//setup camera position
 	m_pCameraMngr->SetPositionTargetAndUpward(
 		vector3(0.0f, 2.5f, 15.0f),//Camera position
@@ -8,6 +11,7 @@ void GLFWApp::InitVariables(void)
 		AXIS_Y);//What is up
 
 	m_bFPC = true;
+
 
 	//load models
 
@@ -203,6 +207,9 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 void GLFWApp::Release(void)
 {
 	//release variables
+
+	//release camera
+	SafeDelete(mainCamera);
 	
 	//delete all bullets
 	for each(Entity* b in bullets)
