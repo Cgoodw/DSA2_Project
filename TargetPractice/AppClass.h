@@ -28,17 +28,31 @@ class GLFWApp
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
-	Simplex::Model* bullet = nullptr; //Model to try
 
+	//TODO: Make these into a list
+	//building the scene
 	Simplex::Model* building = nullptr;
+
+	Simplex::Model* barrel = nullptr;
+	Simplex::Model* barrelB = nullptr;
 
 	Simplex::Model* crate = nullptr;
 	Simplex::Model* crateB = nullptr;
 	Simplex::Model* crateC = nullptr;
 	Simplex::Model* crateD = nullptr;
 
-	bool renderBullet = false;
-	bool addedBullet = false;
+
+	//scene vars
+	int ammo = 30;
+
+
+
+	//bullets
+	std::vector<Entity*> bullets = std::vector<Entity*>();
+	std::vector<vector3> bulletFwdVecs = std::vector<vector3>();
+
+	//bool renderBullet = false;
+	//bool addedBullet = false;
 
 public:
 	static GLFWApp* m_pSelfPointer; //Used for callbacks
@@ -108,6 +122,13 @@ private:
 	OUTPUT: ---
 	*/
 	void ClearScreen(vector4 a_v4ClearColor = vector4(-1.0f));
+
+	/*
+	USAGE: Spawns bullet at current mouse location
+	ARGUMENTS: x, y positions of mouse
+	OUTPUT: ---
+	*/
+	void SpawnBullet(vector3 pos, vector3 fwd);
 	
 protected:
 	/*

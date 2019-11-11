@@ -8,12 +8,8 @@ void GLFWApp::InitVariables(void)
 		AXIS_Y);//What is up
 
 	m_bFPC = true;
-	//init variables
-	//m_pModel = new Simplex::Model();
-	bullet = new Simplex::Model();
-	//load model
-	//m_pModel->Load("Lego\\Unikitty.BTO");
-	bullet->Load("bullet.FBX");
+
+	//load models
 
 	building = new Simplex::Model();
 
@@ -21,6 +17,8 @@ void GLFWApp::InitVariables(void)
 	//building->Load("Models\\SceneTextured.OBJ");
 	building->Load("interior.FBX");
 
+
+	//TODO: Make these into lists and position them
 	
 	crate = new Simplex::Model();
 	crate->Load("crate.FBX");
@@ -35,6 +33,14 @@ void GLFWApp::InitVariables(void)
 	crateD->Load("crate.FBX");
 
 
+	barrel = new Simplex::Model();
+	barrel->Load("barrel.FBX");
+
+	barrelB = new Simplex::Model();
+	barrelB->Load("barrel.FBX");
+
+
+	int ammo = 30;
 }
 void GLFWApp::Update(void)
 {
@@ -59,9 +65,39 @@ void GLFWApp::Update(void)
 	//print info into the console
 	printf("FPS: %d            \r", nFPS);//print the Frames per Second
 	//Print info on the screen
-	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
+	m_pMeshMngr->Print(m_pSystem->GetAppName(), C_YELLOW);
+	m_pMeshMngr->PrintLine("         Shoot the Targets!", C_GREEN);
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(nFPS), C_RED);
+	m_pMeshMngr->Print(std::to_string(nFPS), C_YELLOW);
+
+	//Everything below this is garbage
+	
+
+	//absolutely degenerate way to do this but idk how else
+	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n");
+
+	if (ammo < 1) {
+		m_pMeshMngr->Print("                                OUT OF AMMO", C_RED);
+	}
+
+	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n\n\n");
+	m_pMeshMngr->Print( "   AMMO: ", C_RED);
+	m_pMeshMngr->Print(std::to_string(ammo), C_RED);
+
+	//garbage ended
+
+
+
+	//list of bullets
+	if (bullets.size()>0)
+	{
+		for (int i = 0; i< bullets.size(); i++)
+		{
+			//b->ApplyForce(vector3(0, gravity, 0));
+			matrix4 position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
+			bullets[i]->SetModelMatrix(position);
+		}
+	}
 }
 void GLFWApp::Display(void)
 {
@@ -69,30 +105,13 @@ void GLFWApp::Display(void)
 	ClearScreen();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
 	m_pMeshMngr->AddSkyboxToRenderList();
-	//set the model matrix of the model
-	//m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));
-	//play the default sequence of the model
-	//m_pModel->PlaySequence();
 
-	if (renderBullet)
+	if (bullets.size()>0)
 	{
-		/*POINT pt;
-		GetCursorPos(&pt);
-		UINT MouseX = pt.x;
-		UINT MouseY = pt.y;
-		matrix4 position = glm::translate(IDENTITY_M4, vector3(MouseX, MouseY, -1));*/
-		
-		if (!addedBullet)
-		{	
-			bullet->AddToRenderList();
-			addedBullet = true;
+		for each (Entity* b in bullets)
+		{
+			b->AddToRenderList();
 		}
-			
-
-
-		bullet->SetModelMatrix(ToMatrix4(m_qArcBall));
-		//bullet->SetModelMatrix(position);
-		bullet->PlaySequence();
 	}
 
 	building->AddToRenderList();
@@ -101,9 +120,12 @@ void GLFWApp::Display(void)
 
 
 	
+	//set the scale matrix to shrink all the models
 	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 	matrix4 m4Translate;
+
+	//change position for each one
 	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
 	
 
@@ -127,7 +149,21 @@ void GLFWApp::Display(void)
 	crateD->SetModelMatrix(m4Scale * m4Translate);
 	crateD->PlaySequence();
 
+	//scale barrels even more
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
 
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
+
+	barrel->AddToRenderList();
+	barrel->SetModelMatrix(m4Scale * m4Translate);
+	barrel->PlaySequence();
+
+
+	m4Translate = glm::translate(IDENTITY_M4, vector3( 30, 1, 20));
+
+	barrelB->AddToRenderList();
+	barrelB->SetModelMatrix(m4Scale * m4Translate);
+	barrelB->PlaySequence();
 
 
 	//render list call
@@ -140,11 +176,44 @@ void GLFWApp::Display(void)
 	glfwPollEvents();
 }
 
+void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd) 
+{
+	if (ammo > 0) {
+		//create bullet
+		Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
+
+		//at current mouse position
+		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
+
+		bullet->SetModelMatrix(position);
+		bullet->AddToRenderList();
+
+		//add to list
+		bullets.push_back(bullet);
+
+		//add fwd vec to list
+		bulletFwdVecs.push_back(fwd);
+
+
+		//subtract Ammo
+		ammo -= 1;
+	}
+}
+
 void GLFWApp::Release(void)
 {
 	//release variables
-	//SafeDelete(m_pModel);
-	SafeDelete(bullet);
+	
+	//delete all bullets
+	for each(Entity* b in bullets)
+	{
+		SafeDelete(b);
+	}
 	SafeDelete(building);
 	SafeDelete(crate);
+	SafeDelete(crateB);
+	SafeDelete(crateC);
+	SafeDelete(crateD);
+	SafeDelete(barrel);
+	SafeDelete(barrelB);
 }
