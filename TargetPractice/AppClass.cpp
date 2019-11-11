@@ -178,24 +178,26 @@ void GLFWApp::Display(void)
 
 void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd) 
 {
-	//create bullet
-	Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
+	if (ammo > 0) {
+		//create bullet
+		Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
 
-	//at current mouse position
-	matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y-4, pos.z)); //-4 would be exact camera position for y
-	
-	bullet->SetModelMatrix(position);
-	bullet->AddToRenderList();
+		//at current mouse position
+		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
 
-	//add to list
-	bullets.push_back(bullet);
+		bullet->SetModelMatrix(position);
+		bullet->AddToRenderList();
 
-	//add fwd vec to list
-	bulletFwdVecs.push_back(fwd);
+		//add to list
+		bullets.push_back(bullet);
+
+		//add fwd vec to list
+		bulletFwdVecs.push_back(fwd);
 
 
-	//subtract Ammo
-	ammo -= 1;
+		//subtract Ammo
+		ammo -= 1;
+	}
 }
 
 void GLFWApp::Release(void)
