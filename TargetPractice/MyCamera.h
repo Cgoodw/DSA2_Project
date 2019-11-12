@@ -230,6 +230,12 @@ public:
 	OUTPUT: ---
 	*/
 	void MoveSideways(float a_fDistance = 0.1f);
+	/*
+	USAGE: Gets camera's forward vector
+	ARGUMENTS: ---
+	OUTPUT: vector3 of camera's forward vector
+	*/
+	vector3 GetForward(void);
 };
 
 } //namespace Simplex

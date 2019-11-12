@@ -196,4 +196,10 @@ void MyCamera::MoveSideways(float a_fDistance)
 	m_v3Above += vector3(-a_fDistance, 0.0f, 0.0f);*/
 
 
-}//Needs to be defined
+}
+vector3 Simplex::MyCamera::GetForward(void)
+{
+	Simplex::vector3 forward = m_v3Target - m_v3Position;
+	return forward;
+}
+//Needs to be defined

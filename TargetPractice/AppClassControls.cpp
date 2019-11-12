@@ -22,10 +22,12 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 		//m_pCameraMngr->MoveForward(-fSpeed);
 
 	if (key == GLFW_KEY_A)
-		m_pCameraMngr->MoveSideways(-fSpeed);
+		mainCamera->MoveSideways(-fSpeed);
+		//m_pCameraMngr->MoveSideways(-fSpeed);
 
 	if (key == GLFW_KEY_D)
-		m_pCameraMngr->MoveSideways(fSpeed);
+		mainCamera->MoveSideways(fSpeed);
+		//m_pCameraMngr->MoveSideways(fSpeed);
 	//
 	//if (key == GLFW_KEY_Q)
 	//	m_pCameraMngr->MoveVertical(-fSpeed);
@@ -49,7 +51,7 @@ void GLFWApp::ProcessMouse(int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
 		//shoot bullets
-		SpawnBullet(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());
+		SpawnBullet(mainCamera->GetPosition(), mainCamera->GetForward());
 
 		//create object and render on screen
 		//if(!renderBullet)

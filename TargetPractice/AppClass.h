@@ -24,12 +24,14 @@ class GLFWApp
 	vector4 m_v4ClearColor; //Color of the scene
 
 	MyCamera* mainCamera = nullptr; //set up new camera
+	float yaw = 0;
+	float pitch = 0;
 
 	GLFWwindow* m_pWindow = nullptr; //GLFW pointer to window
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	//CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
-	Simplex::CameraManager* m_pCameraMngr = nullptr;
+	//Simplex::CameraManager* m_pCameraMngr = nullptr;
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 

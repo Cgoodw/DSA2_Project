@@ -56,7 +56,7 @@ void GLFWApp::Init(void)
 	//Init Simplex basic Systems
 	m_pSystem = SystemSingleton::GetInstance();
 	m_pMeshMngr = MeshManager::GetInstance();
-	m_pCameraMngr = Simplex::CameraManager::GetInstance();
+	//m_pCameraMngr = Simplex::CameraManager::GetInstance();
 	//Change size of render target
 	Reshape();
 	//Init App variables
@@ -202,8 +202,41 @@ void GLFWApp::CameraRotation(float a_fSpeed)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
-	m_pCameraMngr->ChangeYaw(fAngleY * 0.25f);
-	m_pCameraMngr->ChangePitch(-fAngleX * 0.25f);
+	//m_pCameraMngr->ChangeYaw(fAngleY * 0.25f);
+	//m_pCameraMngr->ChangePitch(-fAngleX * 0.25f);
+
+	float deltaX = MouseX - CenterX;
+	float deltaY = MouseY - CenterY;
+	float sensitivity = 0.0000000000001f;
+	yaw += deltaX * sensitivity;
+	pitch += deltaY * sensitivity;
+	if (pitch > 89.0f)
+	{
+		pitch = 89.0f;
+	}
+	if (pitch < -89.0f)
+	{
+		pitch = -89.0f;
+	}
+
+	vector3 direction = mainCamera->GetTarget() - mainCamera->GetPosition();
+	direction = vector3(-direction.z, direction.y, direction.x);
+	
+	//get side vector
+	vector3 side = vector3(mainCamera->GetPosition().x + 1, mainCamera->GetPosition().y, mainCamera->GetPosition().z);
+	//rotate around up vector to get yaw
+	quaternion camRot = glm::angleAxis(glm::radians(fAngleY), glm::normalize(mainCamera->GetAbove() - mainCamera->GetPosition()));
+	//rotate around x vector to get pitch
+	quaternion camPitch = glm::angleAxis(glm::radians(fAngleX * .5f), glm::normalize(side - mainCamera->GetPosition()));
+	//combine both rotations
+	quaternion finalPosition = camRot * camPitch;
+	//apply the rotations
+	vector3 targetPos = glm::rotate(finalPosition, mainCamera->GetTarget());
+	//set new vector
+	mainCamera->SetTarget(targetPos);
+
+
+
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 void GLFWApp::Idle(void)
