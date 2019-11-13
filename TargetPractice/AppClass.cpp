@@ -44,6 +44,9 @@ void GLFWApp::InitVariables(void)
 }
 void GLFWApp::Update(void)
 {
+
+	SetCursor(LoadCursor(NULL, IDC_CROSS));
+
 	//Take screen changes in account
 	Reshape();
 
@@ -101,6 +104,8 @@ void GLFWApp::Update(void)
 }
 void GLFWApp::Display(void)
 {
+		
+
 	// Clear the screen
 	ClearScreen();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
@@ -126,31 +131,31 @@ void GLFWApp::Display(void)
 	matrix4 m4Translate;
 
 	//change position for each one
-	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1.25 , 5));
 	
 
 	crate->AddToRenderList();
 	crate->SetModelMatrix(m4Scale * m4Translate);
 	crate->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1, 20));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1.25, 20));
 	crateB->AddToRenderList();
 	crateB->SetModelMatrix(m4Scale * m4Translate);
 	crateB->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1, 15));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1.25, 15));
 
 	crateC->AddToRenderList();
 	crateC->SetModelMatrix(m4Scale * m4Translate);
 	crateC->PlaySequence();
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, -40));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, -40));
 
 	crateD->AddToRenderList();
 	crateD->SetModelMatrix(m4Scale * m4Translate);
 	crateD->PlaySequence();
 
 	//scale barrels even more
-	m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.25f, .25f, .25f));
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
 
@@ -180,7 +185,7 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 {
 	if (ammo > 0) {
 		//create bullet
-		Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
+		Simplex::Entity* bullet = new Entity("bulletSphere.fbx", "bullet");
 
 		//at current mouse position
 		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
