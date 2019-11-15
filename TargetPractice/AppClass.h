@@ -41,6 +41,12 @@ class GLFWApp
 	Simplex::Model* crateC = nullptr;
 	Simplex::Model* crateD = nullptr;
 
+	Simplex::Model* target = nullptr;
+	Simplex::Model* target1 = nullptr;
+	Simplex::Model* target2 = nullptr;
+
+	std::vector<float> tarX = std::vector<float>();
+	std::vector<float> tarZ = std::vector<float>();
 
 	//scene vars
 	int ammo = 30;
@@ -129,6 +135,9 @@ private:
 	OUTPUT: ---
 	*/
 	void SpawnBullet(vector3 pos, vector3 fwd);
+
+	//Generates Random Numbers
+	float Random(int min, int max);
 	
 protected:
 	/*

@@ -1,4 +1,6 @@
 #include "pch.h"
+#include <iostream>
+using namespace std;
 void GLFWApp::InitVariables(void)
 {
 	//setup camera position
@@ -39,14 +41,29 @@ void GLFWApp::InitVariables(void)
 	barrelB = new Simplex::Model();
 	barrelB->Load("barrel.FBX");
 
+	target = new Simplex::Model();
+	target->Load("Target.FBX");
+
+	target1 = new Simplex::Model();
+	target->Load("Target.FBX");
+
+	target2 = new Simplex::Model();
+	target->Load("Target.FBX");
+
+	for (int i = 0; i < 3; i++) {
+		tarX.push_back(Random(5, 40));
+		cout << tarX[i] << endl;
+	}
+
+	for (int i = 0; i < 3; i++) {
+		tarZ.push_back(Random(5, 40));
+		cout << tarZ[i] << endl;
+	}
 
 	int ammo = 30;
 }
 void GLFWApp::Update(void)
 {
-
-	SetCursor(LoadCursor(NULL, IDC_CROSS));
-
 	//Take screen changes in account
 	Reshape();
 
@@ -104,8 +121,6 @@ void GLFWApp::Update(void)
 }
 void GLFWApp::Display(void)
 {
-		
-
 	// Clear the screen
 	ClearScreen();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
@@ -131,31 +146,31 @@ void GLFWApp::Display(void)
 	matrix4 m4Translate;
 
 	//change position for each one
-	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1.25 , 5));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
 	
 
 	crate->AddToRenderList();
 	crate->SetModelMatrix(m4Scale * m4Translate);
 	crate->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1.25, 20));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1, 20));
 	crateB->AddToRenderList();
 	crateB->SetModelMatrix(m4Scale * m4Translate);
 	crateB->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1.25, 15));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1, 15));
 
 	crateC->AddToRenderList();
 	crateC->SetModelMatrix(m4Scale * m4Translate);
 	crateC->PlaySequence();
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, -40));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, -40));
 
 	crateD->AddToRenderList();
 	crateD->SetModelMatrix(m4Scale * m4Translate);
 	crateD->PlaySequence();
 
 	//scale barrels even more
-	m4Scale = glm::scale(IDENTITY_M4, vector3(0.25f, .25f, .25f));
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
 
@@ -169,6 +184,30 @@ void GLFWApp::Display(void)
 	barrelB->AddToRenderList();
 	barrelB->SetModelMatrix(m4Scale * m4Translate);
 	barrelB->PlaySequence();
+
+	//Translate target
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+
+	target->AddToRenderList();
+	target->SetModelMatrix(m4Scale * m4Translate);
+	target->PlaySequence();
+
+	//Translate target1
+	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
+
+	target1->AddToRenderList();
+	target1->SetModelMatrix(m4Scale * m4Translate);
+	target1->PlaySequence();
+
+	//Translate target2
+	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[0]));
+
+	target2->AddToRenderList();
+	target2->SetModelMatrix(m4Scale * m4Translate);
+	target2->PlaySequence();
 
 
 	//render list call
@@ -185,7 +224,7 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 {
 	if (ammo > 0) {
 		//create bullet
-		Simplex::Entity* bullet = new Entity("bulletSphere.fbx", "bullet");
+		Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
 
 		//at current mouse position
 		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
@@ -203,6 +242,13 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 		//subtract Ammo
 		ammo -= 1;
 	}
+}
+
+float GLFWApp::Random(int min, int max)
+{
+	int randNum = rand() % (max - min + 1) + min;
+	float rand = (float)randNum;
+	return rand;
 }
 
 void GLFWApp::Release(void)
