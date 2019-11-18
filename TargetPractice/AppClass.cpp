@@ -44,17 +44,19 @@ void GLFWApp::InitVariables(void)
 	target = new Simplex::Model();
 	target->Load("Target.FBX");
 
-	target1 = new Simplex::Model();
-	target->Load("Target.FBX");
+	targetB = new Simplex::Model();
+	targetB->Load("Target.FBX");
 
-	target2 = new Simplex::Model();
-	target->Load("Target.FBX");
+	targetC = new Simplex::Model();
+	targetC->Load("Target.FBX");
+
+
 
 	for (int i = 0; i < 3; i++) {
 		tarX.push_back(Random(5, 40));
 		cout << tarX[i] << endl;
 	}
-
+	
 	for (int i = 0; i < 3; i++) {
 		tarZ.push_back(Random(5, 40));
 		cout << tarZ[i] << endl;
@@ -187,9 +189,17 @@ void GLFWApp::Display(void)
 	barrelB->SetModelMatrix(m4Scale * m4Translate);
 	barrelB->PlaySequence();
 
+	//glm::mat4  m4Rotate(1); // Creates a identity matrix
+
+	//rotate the object by         this angle    over    this axis
+	//m4Rotate = glm::rotate(m4Rotate, 180.0f, glm::vec3(0.0, 0.0, 1.0));
+
+
 	//Translate target
 	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+	//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
+
 
 	target->AddToRenderList();
 	target->SetModelMatrix(m4Scale * m4Translate);
@@ -199,17 +209,22 @@ void GLFWApp::Display(void)
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
 
-	target1->AddToRenderList();
-	target1->SetModelMatrix(m4Scale * m4Translate);
-	target1->PlaySequence();
+	targetB->AddToRenderList();
+	targetB->SetModelMatrix(m4Scale * m4Translate);
+	targetB->PlaySequence();
 
 	//Translate target2
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[0]));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[2]));
 
-	target2->AddToRenderList();
-	target2->SetModelMatrix(m4Scale * m4Translate);
-	target2->PlaySequence();
+
+	targetC->AddToRenderList();
+	targetC->SetModelMatrix(m4Scale * m4Translate);
+	targetC->PlaySequence();
+
+
+
+
 
 
 	//render list call
@@ -269,4 +284,7 @@ void GLFWApp::Release(void)
 	SafeDelete(crateD);
 	SafeDelete(barrel);
 	SafeDelete(barrelB);
+	SafeDelete(target);
+	SafeDelete(targetB);
+	SafeDelete(targetC);
 }

@@ -42,8 +42,8 @@ class GLFWApp
 	Simplex::Model* crateD = nullptr;
 
 	Simplex::Model* target = nullptr;
-	Simplex::Model* target1 = nullptr;
-	Simplex::Model* target2 = nullptr;
+	Simplex::Model* targetB = nullptr;
+	Simplex::Model* targetC = nullptr;
 
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
