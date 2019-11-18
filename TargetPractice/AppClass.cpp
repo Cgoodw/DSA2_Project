@@ -42,13 +42,13 @@ void GLFWApp::InitVariables(void)
 	barrelB->Load("barrel.FBX");
 
 	target = new Simplex::Model();
-	target->Load("Target.FBX");
+ 	target->Load("targetVerticalTextured.FBX");
 
 	targetB = new Simplex::Model();
-	targetB->Load("Target.FBX");
+	targetB->Load("targetVerticalTextured.FBX");
 
 	targetC = new Simplex::Model();
-	targetC->Load("Target.FBX");
+	targetC->Load("targetVerticalTextured.FBX");
 
 
 
