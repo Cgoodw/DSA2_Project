@@ -11,6 +11,8 @@ void GLFWApp::InitVariables(void)
 
 	m_bFPC = true;
 
+	m_pMyMeshMngr = MyMeshManager::GetInstance();
+	m_pMyMeshMngr->SetCamera(m_pCameraMngr->GetCamera());
 	//load models
 
 	building = new Simplex::Model();
@@ -118,113 +120,121 @@ void GLFWApp::Update(void)
 			bullets[i]->SetModelMatrix(position);
 		}
 	}
+
+
 }
 void GLFWApp::Display(void)
 {
 	// Clear the screen
 	ClearScreen();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
-	m_pMeshMngr->AddSkyboxToRenderList();
+	//m_pMeshMngr->AddSkyboxToRenderList();
+	
 
-	if (bullets.size()>0)
-	{
-		for each (Entity* b in bullets)
-		{
-			b->AddToRenderList();
-		}
-	}
+	//if (bullets.size()>0)
+	//{
+	//	for each (Simplex::Entity* b in bullets)
+	//	{
+	//		b->AddToRenderList();
+	//	}
+	//}
 
 	building->AddToRenderList();
 	building->SetModelMatrix(ToMatrix4(m_qArcBall));
 	building->PlaySequence();
 
 
-	
-	//set the scale matrix to shrink all the models
-	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
+	//
+	////set the scale matrix to shrink all the models
+	//matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
-	matrix4 m4Translate;
+	//matrix4 m4Translate;
 
-	//change position for each one
-	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
-	
+	////change position for each one
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1 , 5));
+	//
 
-	crate->AddToRenderList();
-	crate->SetModelMatrix(m4Scale * m4Translate);
-	crate->PlaySequence();
+	//crate->AddToRenderList();
+	//crate->SetModelMatrix(m4Scale * m4Translate);
+	//crate->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1, 20));
-	crateB->AddToRenderList();
-	crateB->SetModelMatrix(m4Scale * m4Translate);
-	crateB->PlaySequence();
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1, 20));
+	//crateB->AddToRenderList();
+	//crateB->SetModelMatrix(m4Scale * m4Translate);
+	//crateB->PlaySequence();
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1, 15));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1, 15));
 
-	crateC->AddToRenderList();
-	crateC->SetModelMatrix(m4Scale * m4Translate);
-	crateC->PlaySequence();
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, -40));
+	//crateC->AddToRenderList();
+	//crateC->SetModelMatrix(m4Scale * m4Translate);
+	//crateC->PlaySequence();
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, -40));
 
-	crateD->AddToRenderList();
-	crateD->SetModelMatrix(m4Scale * m4Translate);
-	crateD->PlaySequence();
+	//crateD->AddToRenderList();
+	//crateD->SetModelMatrix(m4Scale * m4Translate);
+	//crateD->PlaySequence();
 
-	//scale barrels even more
-	m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
+	////scale barrels even more
+	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.35f, .35f, .35f));
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1, 40));
 
-	barrel->AddToRenderList();
-	barrel->SetModelMatrix(m4Scale * m4Translate);
-	barrel->PlaySequence();
+	//barrel->AddToRenderList();
+	//barrel->SetModelMatrix(m4Scale * m4Translate);
+	//barrel->PlaySequence();
 
 
-	m4Translate = glm::translate(IDENTITY_M4, vector3( 30, 1, 20));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3( 30, 1, 20));
 
-	barrelB->AddToRenderList();
-	barrelB->SetModelMatrix(m4Scale * m4Translate);
-	barrelB->PlaySequence();
+	//barrelB->AddToRenderList();
+	//barrelB->SetModelMatrix(m4Scale * m4Translate);
+	//barrelB->PlaySequence();
 
-	//Translate target
-	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
-
-	target->AddToRenderList();
-	target->SetModelMatrix(m4Scale * m4Translate);
-	target->PlaySequence();
-
-	//Translate target1
+	////Translate target
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
 
-	target1->AddToRenderList();
-	target1->SetModelMatrix(m4Scale * m4Translate);
-	target1->PlaySequence();
+	//target->AddToRenderList();
+	//target->SetModelMatrix(m4Scale * m4Translate);
+	//target->PlaySequence();
 
-	//Translate target2
-	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[0]));
+	////Translate target1
+	////m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
 
-	target2->AddToRenderList();
-	target2->SetModelMatrix(m4Scale * m4Translate);
-	target2->PlaySequence();
+	//target1->AddToRenderList();
+	//target1->SetModelMatrix(m4Scale * m4Translate);
+	//target1->PlaySequence();
 
+	////Translate target2
+	////m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[0]));
+
+	//target2->AddToRenderList();
+	//target2->SetModelMatrix(m4Scale * m4Translate);
+	//target2->PlaySequence();
+
+	//m_pMeshMngr->ClearRenderList();
 
 	//render list call
 	m_pMeshMngr->Render();
 	//clear the render list
 	m_pMeshMngr->ClearRenderList();
+	
+	m_pMyMeshMngr->ClearRenderList();
 	// Swap buffers
 	glfwSwapBuffers(m_pWindow);
 	//poll events in glfw
 	glfwPollEvents();
+
+	//m_pWindow->dispaly();
 }
 
 void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd) 
 {
 	if (ammo > 0) {
 		//create bullet
-		Simplex::Entity* bullet = new Entity("bullet.fbx", "bullet");
+		Simplex::Entity* bullet = new Simplex::Entity("bullet.fbx", "bullet");
 
 		//at current mouse position
 		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
@@ -256,7 +266,7 @@ void GLFWApp::Release(void)
 	//release variables
 	
 	//delete all bullets
-	for each(Entity* b in bullets)
+	for each(Simplex::Entity* b in bullets)
 	{
 		SafeDelete(b);
 	}

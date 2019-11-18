@@ -1,7 +1,7 @@
-#include "BasicX\Camera\Camera.h"
+#include "MyCamera.h"
 using namespace BasicX;
 //  Camera
-void Camera::Init(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
+void MyCamera::Init(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
 {
 	m_bFPS = true;
 	m_nMode = BTO_CAMERAMODE::CAM_PERSP;
@@ -13,7 +13,7 @@ void Camera::Init(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
 
 	return SetPositionTargetAndUpward(a_v3Position, a_v3Target, a_v3Upward);
 }
-void Camera::Swap(Camera& other)
+void MyCamera::Swap(MyCamera& other)
 {
 	std::swap(m_bFPS, other.m_bFPS);
 
@@ -36,17 +36,17 @@ void Camera::Swap(Camera& other)
 	std::swap(m_m4Projection, other.m_m4Projection);
 	std::swap(m_m4View, other.m_m4View);
 }
-void Camera::Release(void){}
+void MyCamera::Release(void){}
 //The big 3
-Camera::Camera()
+MyCamera::MyCamera()
 {
 	Init(vector3(0.0f, 0.0f, 5.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 1.0f, 0.0f));
 }
-Camera::Camera(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
+MyCamera::MyCamera(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
 {
 	Init(a_v3Position, a_v3Target, a_v3Upward);
 }
-Camera::Camera(Camera const& other)
+MyCamera::MyCamera(MyCamera const& other)
 {
 	m_bFPS = other.m_bFPS;
 
@@ -69,42 +69,42 @@ Camera::Camera(Camera const& other)
 	m_m4Projection = other.m_m4Projection;
 	m_m4View = other.m_m4View;
 }
-Camera& Camera::operator=(Camera const& other)
+MyCamera& MyCamera::operator=(MyCamera const& other)
 {
 	if (this != &other)
 	{
 		Release();
 		Init(other.m_v3Position, other.m_v3Target, other.m_v3Upward);
-		Camera temp(other);
+		MyCamera temp(other);
 		Swap(temp);
 	}
 	return *this;
 }
-Camera::~Camera(){ Release(); };
+MyCamera::~MyCamera(){ Release(); };
 //Accessors
-vector3 Camera::GetPosition(void){ return m_v3Position; }
-vector3 Camera::GetForward(void) { return m_v3Forward; }
-vector3 Camera::GetUpward(void) { return m_v3Upward; }
-vector3 Camera::GetRightward(void) { return m_v3Rightward; }
-void Camera::SetForward(vector3 a_v3Input) { m_v3Forward = a_v3Input; }
-void Camera::SetUpward(vector3 a_v3Input) { m_v3Upward = a_v3Input; }
-void Camera::SetRightward(vector3 a_v3Input) { m_v3Rightward = a_v3Input; }
-matrix4 Camera::GetViewMatrix(void){ CalculateView(); return m_m4View; }
-matrix4 Camera::GetProjectionMatrix(void){ CalculateProjection(); return m_m4Projection; }
-void Camera::SetNearFarPlanes(float a_fNear, float a_fFar){ m_v2NearFar = vector2(a_fNear, a_fFar); }
-void Camera::SetFOV(float a_fFOV){ m_fFOV = a_fFOV; }
-void Camera::SetFPS(bool a_bFPS){ m_bFPS = a_bFPS; }
-void Camera::SetCameraMode(BTO_CAMERAMODE a_nMode){ m_nMode = a_nMode; ResetCamera(); }
-BTO_CAMERAMODE Camera::GetCameraMode(void){ return m_nMode; }
-void Camera::SetPosition(vector3 a_v3Position)
+vector3 MyCamera::GetPosition(void){ return m_v3Position; }
+vector3 MyCamera::GetForward(void) { return m_v3Forward; }
+vector3 MyCamera::GetUpward(void) { return m_v3Upward; }
+vector3 MyCamera::GetRightward(void) { return m_v3Rightward; }
+void MyCamera::SetForward(vector3 a_v3Input) { m_v3Forward = a_v3Input; }
+void MyCamera::SetUpward(vector3 a_v3Input) { m_v3Upward = a_v3Input; }
+void MyCamera::SetRightward(vector3 a_v3Input) { m_v3Rightward = a_v3Input; }
+matrix4 MyCamera::GetViewMatrix(void){ CalculateView(); return m_m4View; }
+matrix4 MyCamera::GetProjectionMatrix(void){ CalculateProjection(); return m_m4Projection; }
+void MyCamera::SetNearFarPlanes(float a_fNear, float a_fFar){ m_v2NearFar = vector2(a_fNear, a_fFar); }
+void MyCamera::SetFOV(float a_fFOV){ m_fFOV = a_fFOV; }
+void MyCamera::SetFPS(bool a_bFPS){ m_bFPS = a_bFPS; }
+void MyCamera::SetCameraMode(BTO_CAMERAMODE a_nMode){ m_nMode = a_nMode; ResetCamera(); }
+BTO_CAMERAMODE MyCamera::GetCameraMode(void){ return m_nMode; }
+void MyCamera::SetPosition(vector3 a_v3Position)
 {
 	return SetPositionTargetAndUpward(a_v3Position, m_v3Target, m_v3Upward);
 }
-void Camera::SetTarget(vector3 a_v3Target)
+void MyCamera::SetTarget(vector3 a_v3Target)
 {
 	return SetPositionTargetAndUpward(m_v3Position, a_v3Target, m_v3Upward);
 }
-matrix4 Camera::GetMVP(matrix4 a_m4ModelToWorld)
+matrix4 MyCamera::GetMVP(matrix4 a_m4ModelToWorld)
 {
 	if (m_bInternalCalculation)
 	{
@@ -113,7 +113,7 @@ matrix4 Camera::GetMVP(matrix4 a_m4ModelToWorld)
 	}
 	return m_m4Projection * m_m4View * a_m4ModelToWorld;
 }
-matrix4 Camera::GetVP(void)
+matrix4 MyCamera::GetVP(void)
 {
 	if (m_bInternalCalculation)
 	{
@@ -123,7 +123,7 @@ matrix4 Camera::GetVP(void)
 	return m_m4Projection * m_m4View;
 }
 //--- Non Standard Singleton Methods
-void Camera::CalculateProjection(void)
+void MyCamera::CalculateProjection(void)
 {
 	SystemSingleton* pSystem = SystemSingleton::GetInstance();
 	float fRatio = static_cast<float>(pSystem->GetWindowWidth()) / static_cast<float>(pSystem->GetWindowHeight());
@@ -150,14 +150,14 @@ void Camera::CalculateProjection(void)
 		break;
 	}
 }
-void Camera::CalculateView(void)
+void MyCamera::CalculateView(void)
 {
 	//Code removed for assignment purposes
 	
 	//Calculate the look at
 	m_m4View = glm::lookAt(m_v3Position, m_v3Target, m_v3Upward);
 }
-void Camera::MoveForward(float a_fDistance)
+void MyCamera::MoveForward(float a_fDistance)
 {
 	m_v3Position += m_v3Forward * a_fDistance;
 	m_v3Target += m_v3Forward * a_fDistance;
@@ -173,7 +173,7 @@ void Camera::MoveForward(float a_fDistance)
 		CalculateProjection();
 	}
 }
-vector3 Camera::GetClickOnWorldSpace(uint a_nMouseX, uint a_nMouseY)
+vector3 MyCamera::GetClickOnWorldSpace(uint a_nMouseX, uint a_nMouseY)
 {
 	SystemSingleton* pSystem = SystemSingleton::GetInstance();
 	float posX = static_cast<float>(a_nMouseX - pSystem->GetWindowX());
@@ -190,7 +190,7 @@ vector3 Camera::GetClickOnWorldSpace(uint a_nMouseX, uint a_nMouseY)
 	v4World /= v4World.w;//normalize
 	return vector3(v4World);
 }
-std::pair<vector3, vector3> Camera::GetClickAndDirectionOnWorldSpace(uint a_nMouseX, uint a_nMouseY)
+std::pair<vector3, vector3> MyCamera::GetClickAndDirectionOnWorldSpace(uint a_nMouseX, uint a_nMouseY)
 {
 	SystemSingleton* pSystem = SystemSingleton::GetInstance();
 	
@@ -220,7 +220,7 @@ std::pair<vector3, vector3> Camera::GetClickAndDirectionOnWorldSpace(uint a_nMou
 
 	return std::pair<vector3, vector3> (vector3(v4Start), vector3(v4Direction));
 }
-void Camera::MoveVertical(float a_fDistance)
+void MyCamera::MoveVertical(float a_fDistance)
 {
 	m_v3Position += m_v3Upward * a_fDistance;
 	m_v3Target += m_v3Upward * a_fDistance;
@@ -234,7 +234,7 @@ void Camera::MoveVertical(float a_fDistance)
 		CalculateProjection();
 	}
 }
-void Camera::MoveSideways(float a_fDistance)
+void MyCamera::MoveSideways(float a_fDistance)
 {
 	m_v3Position += m_v3Rightward * a_fDistance;
 	m_v3Target += m_v3Rightward * a_fDistance;
@@ -248,19 +248,19 @@ void Camera::MoveSideways(float a_fDistance)
 		CalculateProjection();
 	}
 }
-void Camera::ChangePitch(float a_fDegree)
+void MyCamera::ChangePitch(float a_fDegree)
 {
 	//Code removed for assignment purposes
 }
-void Camera::ChangeYaw(float a_fDegree)
+void MyCamera::ChangeYaw(float a_fDegree)
 {
 	//Code removed for assignment purposes
 }
-void Camera::ChangeRoll(float a_fDegree)
+void MyCamera::ChangeRoll(float a_fDegree)
 {
 	//Code removed for assignment purposes
 }
-void Camera::SetPositionTargetAndUpward(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
+void MyCamera::SetPositionTargetAndUpward(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
 {
 	m_v3Position = a_v3Position;
 	m_v3Target = a_v3Target;
@@ -271,7 +271,7 @@ void Camera::SetPositionTargetAndUpward(vector3 a_v3Position, vector3 a_v3Target
 	m_v3Rightward = glm::normalize(glm::cross(m_v3Forward, m_v3Upward));
 	CalculateProjection();
 }
-void Camera::ResetCamera(void)
+void MyCamera::ResetCamera(void)
 {
 	m_bInternalCalculation = true;
 	m_v3PitchYawRoll = vector3(0.0f);
@@ -319,16 +319,16 @@ void Camera::ResetCamera(void)
 		break;
 	}
 }
-matrix4 Camera::GetCameraSpace(void)
+matrix4 MyCamera::GetCameraSpace(void)
 {
 	CalculateView();
 	return glm::inverse(m_m4View);
 }
-matrix4 Camera::GetCameraSpaceAdjusted(void)
+matrix4 MyCamera::GetCameraSpaceAdjusted(void)
 {
 	return GetCameraSpace() * glm::translate(vector3(0.0f, 0.0f, -1.2085f));
 }
-matrix4 Camera::GetSpaceUnderMouse(void)
+matrix4 MyCamera::GetSpaceUnderMouse(void)
 {
 	SystemSingleton* pSystem = SystemSingleton::GetInstance();
 	UINT	MouseX, MouseY;		// Coordinates for the mouse
@@ -374,12 +374,12 @@ matrix4 Camera::GetSpaceUnderMouse(void)
 
 	return GetCameraSpaceAdjusted() * glm::translate(vector3(fX, fY, 0.0f)) * glm::scale(vector3(0.05f));
 }
-matrix4 Camera::GetCameraPlane(void)
+matrix4 MyCamera::GetCameraPlane(void)
 {
 	SystemSingleton* pSystem = SystemSingleton::GetInstance();
 	float fSize = pSystem->GetWindowWidth() / static_cast<float>(pSystem->GetWindowHeight());
 	return GetCameraSpaceAdjusted() * glm::scale(vector3(fSize, 1.0f, 0.0f));
 }
 
-void Camera::SetViewMatrix(matrix4 input) { m_m4View = input; m_bInternalCalculation = false; }
-void Camera::SetProjectionMatrix(matrix4 input) { m_m4Projection = input; m_bInternalCalculation = false; }
+void MyCamera::SetViewMatrix(matrix4 input) { m_m4View = input; m_bInternalCalculation = false; }
+void MyCamera::SetProjectionMatrix(matrix4 input) { m_m4Projection = input; m_bInternalCalculation = false; }

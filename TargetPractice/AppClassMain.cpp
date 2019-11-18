@@ -21,9 +21,9 @@ void GLFWApp::Run(void)
 		Idle();
 	} while (glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&	glfwWindowShouldClose(m_pWindow) == 0);// Check if the ESC key was pressed or the window was closed
 }
-void GLFWApp::ClearScreen(vector4 a_v4ClearColor)
+void GLFWApp::ClearScreen(Simplex::vector4 a_v4ClearColor)
 {
-	if (a_v4ClearColor != vector4(-1.0f))
+	if (a_v4ClearColor != Simplex::vector4(-1.0f))
 	{
 		m_v4ClearColor = a_v4ClearColor;
 	}
@@ -54,9 +54,10 @@ void GLFWApp::Init(void)
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_TRUE);
 	//Init Simplex basic Systems
-	m_pSystem = SystemSingleton::GetInstance();
+	m_pSystem = Simplex::SystemSingleton::GetInstance();
 	m_pMeshMngr = MeshManager::GetInstance();
-	m_pCameraMngr = CameraManager::GetInstance();
+	
+	m_pCameraMngr = BasicX::MyCameraManager::GetInstance();
 	//Change size of render target
 	Reshape();
 	//Init App variables
@@ -65,7 +66,7 @@ void GLFWApp::Init(void)
 	glfwSetKeyCallback(m_pWindow, key_callback);
 	glfwSetMouseButtonCallback(m_pWindow, mouse_button_callback);
 }
-void GLFWApp::InitWindow(String a_sWindowName)
+void GLFWApp::InitWindow(Simplex::String a_sWindowName)
 {
 	// Initialise GLFW
 	if (!glfwInit())
@@ -106,7 +107,7 @@ void GLFWApp::InitWindow(String a_sWindowName)
 	// Set the clear color based on Microsoft's CornflowerBlue (DEFAULT_V3NEG in XNA)
 	//if this line is in Init Window it will depend on the .cfg file, if it
 	//is on the InitVariables it will always force it regardless of the .cfg
-	m_v4ClearColor = vector4(C_BLUE_CORNFLOWER, 1.0f);
+	m_v4ClearColor = Simplex::vector4(Simplex::C_BLUE_CORNFLOWER, 1.0f);
 }
 void GLFWApp::ReadConfig(void) {}
 void GLFWApp::WriteConfig(void) {}
@@ -136,23 +137,23 @@ void GLFWApp::ArcBall(float a_fSensitivity)
 	if (MouseX < CenterX)
 	{
 		DeltaMouse = static_cast<float>(CenterX - MouseX);
-		m_qArcBall = quaternion(vector3(0.0f, glm::radians(a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
+		m_qArcBall = Simplex::quaternion(Simplex::vector3(0.0f, glm::radians(a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
 	}
 	else if (MouseX > CenterX)
 	{
 		DeltaMouse = static_cast<float>(MouseX - CenterX);
-		m_qArcBall = quaternion(vector3(0.0f, glm::radians(-a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
+		m_qArcBall = Simplex::quaternion(Simplex::vector3(0.0f, glm::radians(-a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
 	}
 
 	if (MouseY < CenterY)
 	{
 		DeltaMouse = static_cast<float>(CenterY - MouseY);
-		m_qArcBall = quaternion(vector3(glm::radians(-a_fSensitivity * DeltaMouse), 0.0f, 0.0f)) * m_qArcBall;
+		m_qArcBall = Simplex::quaternion(Simplex::vector3(glm::radians(-a_fSensitivity * DeltaMouse), 0.0f, 0.0f)) * m_qArcBall;
 	}
 	else if (MouseY > CenterY)
 	{
 		DeltaMouse = static_cast<float>(MouseY - CenterY);
-		m_qArcBall = quaternion(vector3(glm::radians(a_fSensitivity * DeltaMouse), 0.0f, 0.0f)) * m_qArcBall;
+		m_qArcBall = Simplex::quaternion(Simplex::vector3(glm::radians(a_fSensitivity * DeltaMouse), 0.0f, 0.0f)) * m_qArcBall;
 	}
 
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center

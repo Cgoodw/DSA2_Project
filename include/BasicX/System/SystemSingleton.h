@@ -7,6 +7,7 @@ Date: 2017/06
 
 #include "BasicX\System\Folder.h"
 #include <random>
+#include <vector>
 
 namespace BasicX
 {

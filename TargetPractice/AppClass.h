@@ -5,10 +5,21 @@ Date: 2019/11
 #ifndef __GLFWAPPCLASS_H_
 #define __GLFWAPPCLASS_H_
 
-#include "Simplex\Simplex.h"
+
+#include "GL/glew.h"
 #include "GLFW\glfw3.h"
+//#include "BasicX/System/Folder.h"
+//#include "BasicX/BasicX.h"
+//#define BasicXDLL _declspec(dllimport)
+//#include "BasicX/Camera/Camera.h"
+//#include "BasicX/Camera/CameraManager.h"
+#include "Simplex\Simplex.h"
+#include "MyCameraManager.h"
+#include "MyMeshManager.h"
+
 
 using namespace Simplex;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
@@ -24,8 +35,9 @@ class GLFWApp
 
 	GLFWwindow* m_pWindow = nullptr; //GLFW pointer to window
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
-	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
-	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
+	MyMeshManager* m_pMyMeshMngr = nullptr;//Mesh Manager
+	Simplex::MeshManager* m_pMeshMngr = nullptr;
+	BasicX::MyCameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 
@@ -54,7 +66,7 @@ class GLFWApp
 
 
 	//bullets
-	std::vector<Entity*> bullets = std::vector<Entity*>();
+	std::vector<Simplex::Entity*> bullets = std::vector<Simplex::Entity*>();
 	std::vector<vector3> bulletFwdVecs = std::vector<vector3>();
 
 	//bool renderBullet = false;
