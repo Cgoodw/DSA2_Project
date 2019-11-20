@@ -13,17 +13,40 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 #pragma region Camera Positioning
 	float fSpeed = 0.25f;
 	
+	vector3 fwd = m_pCameraMngr->GetForward();
+	fwd = glm::normalize(fwd);
+	fwd.y = 0;
+	vector3 right = m_pCameraMngr->GetRightward();
+	right = glm::normalize(right);
+	right.y = 0;
+	prevOffset = worldOffset;
 	if (key == GLFW_KEY_W)
-		m_pCameraMngr->MoveForward(fSpeed);
+	{
+		worldOffset -= (fwd*fSpeed);
+			
+	}
+		//m_pCameraMngr->MoveForward(fSpeed);
 
 	if (key == GLFW_KEY_S)
-		m_pCameraMngr->MoveForward(-fSpeed);
+	{
+		worldOffset += (fwd * fSpeed);
+
+	}
+		//m_pCameraMngr->MoveForward(-fSpeed);
 
 	if (key == GLFW_KEY_A)
-		m_pCameraMngr->MoveSideways(-fSpeed);
+	{
+			worldOffset += (right * fSpeed);
+
+	}
+		//m_pCameraMngr->MoveSideways(-fSpeed);
 
 	if (key == GLFW_KEY_D)
-		m_pCameraMngr->MoveSideways(fSpeed);
+	{
+		worldOffset -= (right * fSpeed);
+
+	}
+		//m_pCameraMngr->MoveSideways(fSpeed);
 	//
 	//if (key == GLFW_KEY_Q)
 	//	m_pCameraMngr->MoveVertical(-fSpeed);
