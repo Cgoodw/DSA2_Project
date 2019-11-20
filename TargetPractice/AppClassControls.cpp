@@ -13,17 +13,22 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 #pragma region Camera Positioning
 	float fSpeed = 0.25f;
 	
+	//prevOffset = worldOffset;
 	if (key == GLFW_KEY_W)
-		m_pCameraMngr->MoveForward(fSpeed);
+		worldOffset.x += .5;
+		//m_pCameraMngr->MoveForward(fSpeed);
 
 	if (key == GLFW_KEY_S)
-		m_pCameraMngr->MoveForward(-fSpeed);
+		worldOffset.x -= .5;
+		//m_pCameraMngr->MoveForward(-fSpeed);
 
 	if (key == GLFW_KEY_A)
-		m_pCameraMngr->MoveSideways(-fSpeed);
+		worldOffset.z -= .5;
+		//m_pCameraMngr->MoveSideways(-fSpeed);
 
 	if (key == GLFW_KEY_D)
-		m_pCameraMngr->MoveSideways(fSpeed);
+		worldOffset.z += .5;
+		//m_pCameraMngr->MoveSideways(fSpeed);
 	//
 	//if (key == GLFW_KEY_Q)
 	//	m_pCameraMngr->MoveVertical(-fSpeed);

@@ -117,8 +117,16 @@ void GLFWApp::Update(void)
 	{
 		for (int i = 0; i< bullets.size(); i++)
 		{
+			matrix4 position;
+			
 			//b->ApplyForce(vector3(0, gravity, 0));
-			matrix4 position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
+			position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
+			if (prevOffset != worldOffset)
+			{
+				vector3 bulletoffset = glm::abs(prevOffset + worldOffset);
+				position = glm::translate(bullets[i]->GetModelMatrix(), prevOffset);
+			}
+			prevOffset = worldOffset;
 			bullets[i]->SetModelMatrix(position);
 		}
 	}
@@ -139,36 +147,41 @@ void GLFWApp::Display(void)
 	}
 
 	building->AddToRenderList();
-	building->SetModelMatrix(ToMatrix4(m_qArcBall));
+	//building->SetModelMatrix(ToMatrix4(m_qArcBall));
+	//building->SetModelMatrix(glm::translate(ToMatrix4(m_qArcBall), worldOffset));
+	building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
 	building->PlaySequence();
 
-
+	
 	
 	//set the scale matrix to shrink all the models
 	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 	matrix4 m4Translate;
 
+	
+
 	//change position for each one
 	m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1.25, 5));
-	
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 
 	crate->AddToRenderList();
 	crate->SetModelMatrix(m4Scale * m4Translate);
 	crate->PlaySequence();
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1.25, 20));
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	crateB->AddToRenderList();
 	crateB->SetModelMatrix(m4Scale * m4Translate);
 	crateB->PlaySequence();
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1.25, 15));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	crateC->AddToRenderList();
 	crateC->SetModelMatrix(m4Scale * m4Translate);
 	crateC->PlaySequence();
 	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, -40));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	crateD->AddToRenderList();
 	crateD->SetModelMatrix(m4Scale * m4Translate);
 	crateD->PlaySequence();
@@ -177,14 +190,14 @@ void GLFWApp::Display(void)
 	m4Scale = glm::scale(IDENTITY_M4, vector3(0.25f, .25f, .25f));
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, 40));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 4); //adjust for world offset
 	barrel->AddToRenderList();
 	barrel->SetModelMatrix(m4Scale * m4Translate);
 	barrel->PlaySequence();
 
 
 	m4Translate = glm::translate(IDENTITY_M4, vector3( 30, 1.25, 20));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 4); //adjust for world offset
 	barrelB->AddToRenderList();
 	barrelB->SetModelMatrix(m4Scale * m4Translate);
 	barrelB->PlaySequence();
@@ -198,6 +211,7 @@ void GLFWApp::Display(void)
 	//Translate target
 	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
 
 
@@ -208,7 +222,7 @@ void GLFWApp::Display(void)
 	//Translate target1
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	targetB->AddToRenderList();
 	targetB->SetModelMatrix(m4Scale * m4Translate);
 	targetB->PlaySequence();
@@ -216,15 +230,20 @@ void GLFWApp::Display(void)
 	//Translate target2
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[2]));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 
 	targetC->AddToRenderList();
 	targetC->SetModelMatrix(m4Scale * m4Translate);
 	targetC->PlaySequence();
 
 
+	/*for (size_t i = 0; i < m_pMeshMngr->GetMeshCount(); i++)
+	{
+		Mesh* current = m_pMeshMngr->GetMesh(i);
+		current.
+	}*/
 
-
+	
 
 
 	//render list call
