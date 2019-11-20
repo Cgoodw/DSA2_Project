@@ -26,6 +26,9 @@ class GLFWApp
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
+
+	vector3 worldOffset = vector3(0, 0, 0);
+	vector3 prevOffset = vector3(0, 0, 0);
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 
