@@ -97,6 +97,28 @@ void GLFWApp::Update(void)
 	//Everything below this is garbage
 	
 
+	
+	//x: 23
+	//+z: 9.7
+	//-z: 40
+	if (worldOffset.x > 23)
+	{
+		worldOffset.x = 23;
+	}
+	else if (worldOffset.x < -22)
+	{
+		worldOffset.x = -22;
+	}
+
+	if (worldOffset.z > 40)
+	{
+		worldOffset.z = 40;
+	}
+	else if (worldOffset.z < -9.7)
+	{
+		worldOffset.z = -9.7;
+	}
+
 	//absolutely degenerate way to do this but idk how else
 	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n");
 
