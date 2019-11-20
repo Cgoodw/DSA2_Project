@@ -37,6 +37,8 @@ Update: 2017/07
 
 #include "Simplex\Physics\RigidBody.h"//RigidBody Class
 
+#include "MyRigidBody.h"//RigidBody Class
+
 #include "Simplex\Physics\Entity.h"//Entity Class
 #include "Simplex\Physics\EntityManager.h"//Entity Manager Singleton
 
