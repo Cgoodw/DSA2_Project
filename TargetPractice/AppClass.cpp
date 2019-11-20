@@ -121,12 +121,12 @@ void GLFWApp::Update(void)
 			
 			//b->ApplyForce(vector3(0, gravity, 0));
 			position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
-			if (prevOffset != worldOffset)
+			/*if (prevOffset != worldOffset)
 			{
 				vector3 bulletoffset = glm::abs(prevOffset + worldOffset);
 				position = glm::translate(bullets[i]->GetModelMatrix(), prevOffset);
 			}
-			prevOffset = worldOffset;
+			prevOffset = worldOffset;*/
 			bullets[i]->SetModelMatrix(position);
 		}
 	}
