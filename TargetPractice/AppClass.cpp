@@ -242,7 +242,7 @@ void GLFWApp::Display(void)
 	//Translate ammoPak
 	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 	m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
-
+	m4Translate = glm::translate(m4Translate, worldOffset * 2);
 
 	ammoPak->AddToRenderList();
 	ammoPak->SetModelMatrix(m4Scale * m4Translate);
