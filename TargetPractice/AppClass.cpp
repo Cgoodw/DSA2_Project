@@ -18,40 +18,48 @@ void GLFWApp::InitVariables(void)
 	//building->Load("Models\\groundModel.OBJ");
 	//building->Load("Models\\SceneTextured.OBJ");
 	building->Load("interior.FBX");
-
+	buildingRB = new MyRigidBody(building->GetVertexList());
 
 	//TODO: Make these into lists and position them
 	
 	crate = new Simplex::Model();
 	crate->Load("crate.FBX");
+	crateRB = new MyRigidBody(building->GetVertexList());
 
 	crateB = new Simplex::Model();
 	crateB->Load("crate.FBX");
+	crateBRB = new MyRigidBody(building->GetVertexList());
 
 	crateC = new Simplex::Model();
 	crateC->Load("crate.FBX");
+	crateCRB = new MyRigidBody(building->GetVertexList());
 
 	crateD = new Simplex::Model();
 	crateD->Load("crate.FBX");
-
+	crateDRB = new MyRigidBody(building->GetVertexList());
 
 	barrel = new Simplex::Model();
 	barrel->Load("barrel.FBX");
+	barrelRB = new MyRigidBody(building->GetVertexList());
 
 	barrelB = new Simplex::Model();
 	barrelB->Load("barrel.FBX");
+	barrelBRB = new MyRigidBody(building->GetVertexList());
 
 	target = new Simplex::Model();
  	target->Load("targetVerticalTextured.FBX");
+	targetRB = new MyRigidBody(building->GetVertexList());
 
 	targetB = new Simplex::Model();
 	targetB->Load("targetVerticalTextured.FBX");
+	targetBRB = new MyRigidBody(building->GetVertexList());
 
 	targetC = new Simplex::Model();
 	targetC->Load("targetVerticalTextured.FBX");
 
 	ammoPak = new Simplex::Model();
 	ammoPak->Load("ammo.FBX");
+	targetCRB = new MyRigidBody(building->GetVertexList());
 
 
 
@@ -99,6 +107,28 @@ void GLFWApp::Update(void)
 
 	//Everything below this is garbage
 	
+
+	
+	//x: 23
+	//+z: 9.7
+	//-z: 40
+	if (worldOffset.x > 23)
+	{
+		worldOffset.x = 23;
+	}
+	else if (worldOffset.x < -22)
+	{
+		worldOffset.x = -22;
+	}
+
+	if (worldOffset.z > 40)
+	{
+		worldOffset.z = 40;
+	}
+	else if (worldOffset.z < -9.7)
+	{
+		worldOffset.z = -9.7;
+	}
 
 	//absolutely degenerate way to do this but idk how else
 	m_pMeshMngr->Print("\n\n\n\n\n\n\n\n\n");

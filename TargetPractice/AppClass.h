@@ -2,6 +2,8 @@
 Programmer: Flaming Papayas
 Date: 2019/11
 ----------------------------------------------*/
+#include "pch.h"
+
 #ifndef __GLFWAPPCLASS_H_
 #define __GLFWAPPCLASS_H_
 
@@ -48,6 +50,17 @@ class GLFWApp
 	Simplex::Model* targetB = nullptr;
 	Simplex::Model* targetC = nullptr;
 
+	MyRigidBody* buildingRB = nullptr;
+	MyRigidBody* crateRB = nullptr;
+	MyRigidBody* crateBRB = nullptr;
+	MyRigidBody* crateCRB = nullptr;
+	MyRigidBody* crateDRB = nullptr;
+	MyRigidBody* barrelRB = nullptr;
+	MyRigidBody* barrelBRB = nullptr;
+	MyRigidBody* targetRB = nullptr;
+	MyRigidBody* targetBRB = nullptr;
+	MyRigidBody* targetCRB = nullptr;
+
 	Simplex::Model* ammoPak = nullptr;
 
 	std::vector<float> tarX = std::vector<float>();
@@ -55,8 +68,6 @@ class GLFWApp
 
 	//scene vars
 	int ammo = 30;
-
-
 
 	//bullets
 	std::vector<Entity*> bullets = std::vector<Entity*>();
