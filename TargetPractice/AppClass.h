@@ -2,6 +2,8 @@
 Programmer: Flaming Papayas
 Date: 2019/11
 ----------------------------------------------*/
+#include "pch.h"
+
 #ifndef __GLFWAPPCLASS_H_
 #define __GLFWAPPCLASS_H_
 
@@ -26,6 +28,9 @@ class GLFWApp
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
+
+	vector3 worldOffset = vector3(0, 0, 0);
+	vector3 prevOffset = vector3(0, 0, 0);
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 
@@ -45,13 +50,24 @@ class GLFWApp
 	Simplex::Model* targetB = nullptr;
 	Simplex::Model* targetC = nullptr;
 
+	MyRigidBody* buildingRB = nullptr;
+	MyRigidBody* crateRB = nullptr;
+	MyRigidBody* crateBRB = nullptr;
+	MyRigidBody* crateCRB = nullptr;
+	MyRigidBody* crateDRB = nullptr;
+	MyRigidBody* barrelRB = nullptr;
+	MyRigidBody* barrelBRB = nullptr;
+	MyRigidBody* targetRB = nullptr;
+	MyRigidBody* targetBRB = nullptr;
+	MyRigidBody* targetCRB = nullptr;
+
+	Simplex::Model* ammoPak = nullptr;
+
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
 
 	//scene vars
 	int ammo = 30;
-
-
 
 	//bullets
 	std::vector<Entity*> bullets = std::vector<Entity*>();
