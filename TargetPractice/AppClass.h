@@ -45,6 +45,8 @@ class GLFWApp
 	Simplex::Model* targetB = nullptr;
 	Simplex::Model* targetC = nullptr;
 
+	Simplex::Model* ammoPak = nullptr;
+
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
 

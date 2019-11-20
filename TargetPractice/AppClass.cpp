@@ -50,6 +50,9 @@ void GLFWApp::InitVariables(void)
 	targetC = new Simplex::Model();
 	targetC->Load("targetVerticalTextured.FBX");
 
+	ammoPak = new Simplex::Model();
+	ammoPak->Load("ammo.FBX");
+
 
 
 	for (int i = 0; i < 3; i++) {
@@ -110,7 +113,7 @@ void GLFWApp::Update(void)
 
 	//garbage ended
 
-
+	//See current position
 
 	//list of bullets
 	if (bullets.size()>0)
@@ -221,6 +224,15 @@ void GLFWApp::Display(void)
 	targetC->AddToRenderList();
 	targetC->SetModelMatrix(m4Scale * m4Translate);
 	targetC->PlaySequence();
+
+	//Translate ammoPak
+	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
+
+
+	ammoPak->AddToRenderList();
+	ammoPak->SetModelMatrix(m4Scale * m4Translate);
+	ammoPak->PlaySequence();
 
 
 
