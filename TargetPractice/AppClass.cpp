@@ -57,6 +57,9 @@ void GLFWApp::InitVariables(void)
 	targetC = new Simplex::Model();
 	targetC->Load("targetVerticalTextured.FBX");
 
+	targetLerp = new Simplex::Model();
+	targetLerp->Load("targetVerticalTextured.FBX");
+
 	ammoPak = new Simplex::Model();
 	ammoPak->Load("ammo.FBX");
 	targetCRB = new MyRigidBody(building->GetVertexList());
@@ -104,6 +107,10 @@ void GLFWApp::Update(void)
 	m_pMeshMngr->PrintLine("         Shoot the Targets!", C_GREEN);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), C_YELLOW);
+
+	currPos += 0.5f;
+
+	if()
 
 	//Everything below this is garbage
 	
@@ -270,6 +277,15 @@ void GLFWApp::Display(void)
 
 	targetC->AddToRenderList();
 	targetC->SetModelMatrix(m4Scale * m4Translate);
+	targetC->PlaySequence();
+
+	//Translate targetlerp
+	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, currPos));
+	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
+
+	targetC->AddToRenderList();
+	targetC->SetModelMatrix(m4Scale* m4Translate);
 	targetC->PlaySequence();
 
 	//Translate ammoPak

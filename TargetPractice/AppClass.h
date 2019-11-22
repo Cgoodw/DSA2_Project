@@ -49,6 +49,7 @@ class GLFWApp
 	Simplex::Model* target = nullptr;
 	Simplex::Model* targetB = nullptr;
 	Simplex::Model* targetC = nullptr;
+	Simplex::Model* targetLerp = nullptr;
 
 	MyRigidBody* buildingRB = nullptr;
 	MyRigidBody* crateRB = nullptr;
@@ -69,6 +70,8 @@ class GLFWApp
 	//scene vars
 	int ammo = 30;
 	int score = 0;
+	const float StartPos = 0.0f;
+	int currPos = 0.0f;
 
 	//bullets
 	std::vector<Entity*> bullets = std::vector<Entity*>();
