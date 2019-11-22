@@ -68,6 +68,7 @@ class GLFWApp
 
 	//scene vars
 	int ammo = 30;
+	int score = 0;
 
 	//bullets
 	std::vector<Entity*> bullets = std::vector<Entity*>();

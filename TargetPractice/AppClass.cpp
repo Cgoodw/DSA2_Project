@@ -141,6 +141,9 @@ void GLFWApp::Update(void)
 	m_pMeshMngr->Print( "   AMMO: ", C_RED);
 	m_pMeshMngr->Print(std::to_string(ammo), C_RED);
 
+	m_pMeshMngr->Print("   Score: ", C_RED);
+	m_pMeshMngr->Print(std::to_string(score), C_RED);
+
 	//garbage ended
 
 	//See current position
