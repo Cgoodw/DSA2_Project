@@ -5,7 +5,7 @@ void GLFWApp::InitVariables(void)
 {
 	//setup camera position
 	m_pCameraMngr->SetPositionTargetAndUpward(
-		vector3(0.0f, 2.5f, 15.0f),//Camera position
+		vector3(0.0f, 4.5f, 15.0f),//Camera position
 		vector3(0.0f, 2.5f, 0.0f),//What I'm looking at
 		AXIS_Y);//What is up
 
@@ -243,7 +243,7 @@ void GLFWApp::Display(void)
 
 	//Translate target
 	m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(5, 15, -50.25));
 	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
 
@@ -254,7 +254,7 @@ void GLFWApp::Display(void)
 
 	//Translate target1
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(-25, 10, -50.25));
 	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 	targetB->AddToRenderList();
 	targetB->SetModelMatrix(m4Scale * m4Translate);
@@ -262,7 +262,7 @@ void GLFWApp::Display(void)
 
 	//Translate target2
 	//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-	m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[2]));
+	m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, -50.25));
 	m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
 
 	targetC->AddToRenderList();
