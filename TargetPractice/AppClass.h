@@ -31,6 +31,11 @@ class GLFWApp
 
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
+
+
+	//current Scene number
+	int sceneNum = 0;
+
 	
 	//Simplex::Model* m_pModel = nullptr; //Model to try
 
@@ -50,6 +55,8 @@ class GLFWApp
 	Simplex::Model* targetB = nullptr;
 	Simplex::Model* targetC = nullptr;
 	Simplex::Model* targetLerp = nullptr;
+	Simplex::Model* ammoPak = nullptr;
+
 
 	MyRigidBody* buildingRB = nullptr;
 	MyRigidBody* crateRB = nullptr;
@@ -62,10 +69,12 @@ class GLFWApp
 	MyRigidBody* targetBRB = nullptr;
 	MyRigidBody* targetCRB = nullptr;
 
-	Simplex::Model* ammoPak = nullptr;
-
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
+
+
+	//using this cube to hold images
+	Simplex::Model* menuBG = nullptr;
 
 	//scene vars
 	int ammo = 30;
@@ -158,6 +167,17 @@ private:
 
 	//Generates Random Numbers
 	float Random(int min, int max);
+
+	//runs the main scene
+	void mainScene(void);
+
+	//runs the main menu
+	void mainMenuScene(void);
+
+	//runs the game over scene
+	void gameOverScene(void);
+
+	void changeScene(int x =0);
 	
 protected:
 	/*
