@@ -10,6 +10,7 @@ Date: 2019/11
 #include "Simplex\Simplex.h"
 #include "GLFW\glfw3.h"
 
+
 using namespace Simplex;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -32,6 +33,8 @@ class GLFWApp
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
 
+	std::vector<int> keysPressed = std::vector<int>();
+	bool sprinting = 0;
 
 	//current Scene number
 	int sceneNum = 0;
