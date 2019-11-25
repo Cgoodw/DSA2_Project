@@ -95,6 +95,9 @@ void GLFWApp::Update(void)
 
 	//Main Menu Scene
 	if (sceneNum == 0) {
+		//reset camera view to center
+		m_pCameraMngr->SetPositionTargetAndUpward(vector3(0, 4.5, 15), vector3(0, 2.5, 0), vector3(0, 1, 0), 0);
+
 		//reset Variables
 		ammo = 30;
 		score = 0;
@@ -109,7 +112,7 @@ void GLFWApp::Update(void)
 		m_pMeshMngr->PrintLine("                          Push P to start", C_BLUE);
 
 
-		//startt the game on a key press of P
+		//start the game on a key press of P
 		if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS) {
 			changeScene(1);
 		}
@@ -118,7 +121,6 @@ void GLFWApp::Update(void)
 	//Main Game Scene
 	if (sceneNum == 1) {
 		glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_TRUE);
-
 		//Is the arcball active?
 		ArcBall();
 
