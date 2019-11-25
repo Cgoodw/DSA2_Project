@@ -110,7 +110,7 @@ void GLFWApp::Update(void)
 
 	currPos += 0.5f;
 
-	if()
+	
 
 	//Everything below this is garbage
 	
