@@ -345,7 +345,7 @@ void GLFWApp::Display(void)
 			}
 		}
 
-		building->AddToRenderList(true);
+		building->AddToRenderList();
 		//building->SetModelMatrix(ToMatrix4(m_qArcBall));
 		//building->SetModelMatrix(glm::translate(ToMatrix4(m_qArcBall), worldOffset));
 		building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
@@ -377,7 +377,7 @@ void GLFWApp::Display(void)
 			}
 
 			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-			crates[i]->AddToRenderList(true);
+			crates[i]->AddToRenderList();
 			crates[i]->SetModelMatrix(m4Scale * m4Translate);
 			//crate->PlaySequence();
 		}
@@ -398,7 +398,7 @@ void GLFWApp::Display(void)
 			}
 
 			m4Translate = glm::translate(m4Translate, worldOffset * 4); //adjust for world offset
-			barrels[i]->AddToRenderList(true);
+			barrels[i]->AddToRenderList();
 			barrels[i]->SetModelMatrix(m4Scale * m4Translate);
 			//barrel->PlaySequence();
 		}
@@ -441,7 +441,7 @@ void GLFWApp::Display(void)
 			}
 
 			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-			targets[i]->AddToRenderList(true);
+			targets[i]->AddToRenderList();
 			targets[i]->SetModelMatrix(m4Scale * m4Translate);
 			//target->PlaySequence();
 		}
@@ -458,7 +458,7 @@ void GLFWApp::Display(void)
 				m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
 				m4Translate = glm::translate(m4Translate, worldOffset * 2);
 			}
-			ammoPacks[i]->AddToRenderList(true);
+			ammoPacks[i]->AddToRenderList();
 			ammoPacks[i]->SetModelMatrix(m4Scale * m4Translate);
 			//ammoPack->PlaySequence();
 		}
