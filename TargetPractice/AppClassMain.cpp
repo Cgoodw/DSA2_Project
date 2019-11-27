@@ -15,11 +15,20 @@ void GLFWApp::Run(void)
 {
 	//Initialize the system with the fields recollected by the constructor
 	Init();
-	do {
-		Update();
-		Display();
-		Idle();
-	} while (glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&	glfwWindowShouldClose(m_pWindow) == 0);// Check if the ESC key was pressed or the window was closed
+
+	//mainMenuScene();
+	//FSM
+	switch (sceneNum) {
+		case(0):
+			mainMenuScene();
+			break;
+		case(1):
+			mainScene();
+			break;
+		case(2):
+			gameOverScene();
+			break;
+	}
 }
 void GLFWApp::ClearScreen(vector4 a_v4ClearColor)
 {
@@ -48,9 +57,9 @@ void GLFWApp::Init(void)
 	//set the self pointer of the app
 	m_pSelfPointer = this;
 	//Init GLFW Window
-	InitWindow("GLFW_APP");
+	InitWindow("Target Practice");
 	//Set the maximum framerate of the app
-	SetMaxFramerate(60.0f);
+	SetMaxFramerate(120.0f);
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_TRUE);
 	//Init Simplex basic Systems
@@ -210,3 +219,4 @@ void GLFWApp::Idle(void)
 {
 	//runs after Display, nothing to do in this app
 }
+

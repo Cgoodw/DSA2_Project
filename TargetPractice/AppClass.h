@@ -10,6 +10,7 @@ Date: 2019/11
 #include "Simplex\Simplex.h"
 #include "GLFW\glfw3.h"
 
+
 using namespace Simplex;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -32,6 +33,15 @@ class GLFWApp
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
 
+	std::vector<int> keysPressed = std::vector<int>();
+	bool sprinting = 0;
+
+	//current Scene number
+	int sceneNum = 0;
+
+	
+	//Simplex::Model* m_pModel = nullptr; //Model to try
+
 	//TODO: Make these into a list
 	//building the scene
 	Simplex::Entity* building = nullptr;
@@ -47,6 +57,7 @@ class GLFWApp
 	Simplex::Entity* target = nullptr;
 	Simplex::Entity* targetB = nullptr;
 	Simplex::Entity* targetC = nullptr;
+	Simplex::Entity* ammoPak = nullptr;
 
 	Simplex::RigidBody* buildingRB = nullptr;
 	Simplex::RigidBody* crateRB = nullptr;
@@ -65,6 +76,10 @@ class GLFWApp
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
 
+
+	//using this cube to hold images
+	Simplex::Model* menuBG = nullptr;
+
 	//scene vars
 	int ammo = 30;
 	int points = 0;
@@ -72,6 +87,9 @@ class GLFWApp
 	int numBarrels = 2;
 	int numCrates = 4;
 	int numAmmoPacks = 1;
+	int score = 0;
+	const float StartPos = 0.0f;
+	int currPos = 0.0f;
 
 	//bullets
 	//Simplex::Model* bulletModel;
@@ -170,6 +188,18 @@ private:
 
 	//Generates Random Numbers
 	float Random(int min, int max);
+
+	//runs the main scene
+	void mainScene(void);
+
+	//runs the main menu
+	void mainMenuScene(void);
+
+	//runs the game over scene
+	void gameOverScene(void);
+
+	void changeScene(int x =0);
+	
 
 	void RemoveBullet(int position);
 	
