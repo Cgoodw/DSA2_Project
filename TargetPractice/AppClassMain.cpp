@@ -20,13 +20,13 @@ void GLFWApp::Run(void)
 	//FSM
 	switch (sceneNum) {
 		case(0):
-			mainMenuScene();
+			MainMenuScene();
 			break;
 		case(1):
-			mainScene();
+			MainScene();
 			break;
 		case(2):
-			gameOverScene();
+			GameOverScene();
 			break;
 	}
 }

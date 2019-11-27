@@ -74,7 +74,7 @@ void GLFWApp::InitVariables(void)
 	barrelBRB = new MyRigidBody(building->GetVertexList());
 
 	target = new Simplex::Model();
- 	target->Load("targetVerticalTextured.FBX");
+	target->Load("targetVerticalTextured.FBX");
 	targetRB = new MyRigidBody(building->GetVertexList());
 
 	targetB = new Simplex::Model();
@@ -82,10 +82,10 @@ void GLFWApp::InitVariables(void)
 	targetBRB = new MyRigidBody(building->GetVertexList());
 
 	targetC = new Simplex::Model();
-	targetC->Load("targetVerticalTextured.FBX");*/
+	targetC->Load("targetVerticalTextured.FBX");
 
 	targetLerp = new Simplex::Model();
-	targetLerp->Load("targetVerticalTextured.FBX");
+	targetLerp->Load("targetVerticalTextured.FBX");*/
 
 	/*ammoPak = new Simplex::Model();
 	ammoPak->Load("ammo.FBX");
@@ -99,13 +99,13 @@ void GLFWApp::InitVariables(void)
 		tarX.push_back(Random(5, 40));
 		cout << tarX[i] << endl;
 	}
-	
+
 	for (int i = 0; i < 3; i++) {
 		tarZ.push_back(Random(5, 40));
 		cout << tarZ[i] << endl;
 	}
 
-	int ammo = 1;
+	ammo = 30;
 }
 void GLFWApp::Update(void)
 {
@@ -140,7 +140,7 @@ void GLFWApp::Update(void)
 
 		//start the game on a key press of P
 		if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS) {
-			changeScene(1);
+			ChangeScene(1);
 		}
 	}
 
@@ -204,60 +204,58 @@ void GLFWApp::Update(void)
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
 		m_pMeshMngr->Print(std::to_string(score), C_RED);
 
+		//points
+		//m_pMeshMngr->Print("   POINTS: ", C_RED);
+		//m_pMeshMngr->Print(std::to_string(points), C_RED);
+
 		//garbage ended
-	//points
-	m_pMeshMngr->Print("   POINTS: ", C_RED);
-	m_pMeshMngr->Print(std::to_string(points), C_RED);
 
-	//garbage ended
-
-		//See current position
-
-	//list of bullets
-	if (bullets.size() > 0)
-	{
-		for (int i = 0; i < bullets.size(); i++)
+		//list of bullets
+		if (bullets.size() > 0)
 		{
-			//check for collisions with targets and if so destroy
-			for (int j = 0; j < targetRBs.size(); j++)
+			for (int i = 0; i < bullets.size(); i++)
 			{
-				if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(targetRBs[j]))
+				//check for collisions with all objects and if so destroy
+				for (int j = 0; j < targetRBs.size(); j++)
 				{
-					cout << "target collision" << endl;
+					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(targetRBs[j]))
+					{
+						cout << "target collision" << endl;
 
-					points++;
+						score++;
 
-					RemoveBullet(i);
-					break;
+						RemoveBullet(i);
+						break;
+					}
 				}
-			}
-			for (int j = 0; j < crateRBs.size(); j++)
-			{
-				if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(crateRBs[j]))
+				for (int j = 0; j < crateRBs.size(); j++)
 				{
-					cout << "crate collision" << endl;
-					RemoveBullet(i);
-					break;
+					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(crateRBs[j]))
+					{
+						cout << "crate collision" << endl;
+						RemoveBullet(i);
+						break;
+					}
 				}
-			}
-			for (int j = 0; j < barrelRBs.size(); j++)
-			{
-				if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(barrelRBs[j]))
+				for (int j = 0; j < barrelRBs.size(); j++)
 				{
-					cout << "barrel collision" << endl;
-					RemoveBullet(i);
-					break;
-					//add bounce back?
+					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(barrelRBs[j]))
+					{
+						cout << "barrel collision" << endl;
+						RemoveBullet(i);
+						break;
+						//add bounce back?
+					}
 				}
-			}
-			for (int j = 0; j < ammoPackRBs.size(); j++)
-			{
-				if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(ammoPackRBs[j]))
+				for (int j = 0; j < ammoPackRBs.size(); j++)
 				{
-					cout << "ammo pak collision" << endl;
-					//should the bullet be removed when colliding with an ammo pak?
-					RemoveBullet(i);
-					break;
+					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(ammoPackRBs[j]))
+					{
+						cout << "ammo pak collision" << endl;
+						//should the bullet be removed when colliding with an ammo pak?
+						RemoveBullet(i);
+						break;
+					}
 				}
 			}
 		}
@@ -286,36 +284,15 @@ void GLFWApp::Update(void)
 				}
 			}
 		}
+		
 	}
-}
-		//list of bullets
-		if (bullets.size() > 0)
-		{
-			for (int i = 0; i < bullets.size(); i++)
-			{
-				matrix4 position;
-
-				//b->ApplyForce(vector3(0, gravity, 0));
-				position = glm::translate(bullets[i]->GetModelMatrix(), bulletFwdVecs[i]); //-4 would be exact camera position for y
-				/*if (prevOffset != worldOffset)
-				{
-					vector3 bulletoffset = glm::abs(prevOffset + worldOffset);
-					position = glm::translate(bullets[i]->GetModelMatrix(), prevOffset);
-				}
-				prevOffset = worldOffset;*/
-				bullets[i]->SetModelMatrix(position);
-			}
-		}
-
-	}
-
 
 	//Game Over Scene
 	if (sceneNum == 2) {
 		glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_FALSE);
 		m_pMeshMngr->Print("\n\n\n\n\n");
 		m_pMeshMngr->PrintLine("                                 GAME OVER", C_RED);
-		m_pMeshMngr->Print("\n\n\n\n\n"); 
+		m_pMeshMngr->Print("\n\n\n\n\n");
 		m_pMeshMngr->Print("                              FINAL SCORE:", C_RED);
 		m_pMeshMngr->Print(std::to_string(score), C_RED);
 		m_pMeshMngr->Print("\n\n");
@@ -325,7 +302,7 @@ void GLFWApp::Update(void)
 
 		//move back to the main menu
 		if (glfwGetKey(m_pWindow, GLFW_KEY_M) == GLFW_PRESS) {
-			changeScene(0);
+			ChangeScene(0);
 		}
 	}
 }
@@ -345,10 +322,10 @@ void GLFWApp::Display(void)
 		matrix4 m4Translate = glm::translate(IDENTITY_M4, vector3(1.2f, -2.7f, 0));
 		matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.61f, .61f, .61f));
 
-		menuBG->SetModelMatrix(m4Scale*m4Translate);
+		menuBG->SetModelMatrix(m4Scale * m4Translate);
 		menuBG->PlaySequence();
 	}
-	
+
 	//Game Over Screen
 	if (sceneNum == 2) {
 		glClearColor(C_BLACK.r, C_BLACK.r, C_BLACK.r, 1);
@@ -356,145 +333,135 @@ void GLFWApp::Display(void)
 	}
 
 	//Main Scene
-	if(sceneNum==1){
+	if (sceneNum == 1) {
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
 		m_pMeshMngr->AddSkyboxToRenderList();
 
-		if (bullets.size()>0)
+		if (bullets.size() > 0)
 		{
-			for each (Entity* b in bullets)
+			for each (Entity * b in bullets)
 			{
 				b->AddToRenderList();
 			}
 		}
 
-	building->AddToRenderList(true);
-	//building->SetModelMatrix(ToMatrix4(m_qArcBall));
-	//building->SetModelMatrix(glm::translate(ToMatrix4(m_qArcBall), worldOffset));
-	building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
-	//building->PlaySequence();
+		building->AddToRenderList(true);
+		//building->SetModelMatrix(ToMatrix4(m_qArcBall));
+		//building->SetModelMatrix(glm::translate(ToMatrix4(m_qArcBall), worldOffset));
+		building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
+		//building->PlaySequence();
 
-	//set the scale matrix to shrink all the models
-	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
+		//set the scale matrix to shrink all the models
+		matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 		matrix4 m4Translate;
 
-	for (size_t i = 0; i < crates.size(); i++)
-	{
-		//change position for each one
-		if (i == 0)
+		for (size_t i = 0; i < crates.size(); i++)
 		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1.25, 5));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-		}
-		else if (i == 1)
-		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1.25, 20));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-		}
-		else if (i == 2)
-		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1.25, 15));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-		}
-		else if (i == 3)
-		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, -40));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-		}
-		crates[i]->AddToRenderList(true);
-		crates[i]->SetModelMatrix(m4Scale * m4Translate);
-		//crate->PlaySequence();
-	}
+			//change position for each one
+			if (i == 0)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0, 1.25, 5));
+			}
+			else if (i == 1)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(15, 1.25, 20));
+			}
+			else if (i == 2)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-20, 1.25, 15));
+			}
+			else if (i == 3)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, -40));
+			}
 
-	for (size_t i = 0; i < barrels.size(); i++)
-	{
-		//scale barrels even more
-		m4Scale = glm::scale(IDENTITY_M4, vector3(0.25f, .25f, .25f));
+			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
+			crates[i]->AddToRenderList(true);
+			crates[i]->SetModelMatrix(m4Scale * m4Translate);
+			//crate->PlaySequence();
+		}
 
-		//change position for each one
-		if (i == 0)
+		for (size_t i = 0; i < barrels.size(); i++)
 		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, 40));
+			//scale barrels even more
+			m4Scale = glm::scale(IDENTITY_M4, vector3(0.25f, .25f, .25f));
+
+			//change position for each one
+			if (i == 0)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-30, 1.25, 40));
+			}
+			else if (i == 1)
+			{
+				m4Translate = glm::translate(IDENTITY_M4, vector3(30, 1.25, 20));
+			}
+
 			m4Translate = glm::translate(m4Translate, worldOffset * 4); //adjust for world offset
+			barrels[i]->AddToRenderList(true);
+			barrels[i]->SetModelMatrix(m4Scale * m4Translate);
+			//barrel->PlaySequence();
 		}
-		else if (i == 1)
-		{
-			m4Translate = glm::translate(IDENTITY_M4, vector3(30, 1.25, 20));
-			m4Translate = glm::translate(m4Translate, worldOffset * 4); //adjust for world offset
-		}
-		barrels[i]->AddToRenderList(true);
-		barrels[i]->SetModelMatrix(m4Scale * m4Translate);
-		//barrel->PlaySequence();
-	}
 
 		//glm::mat4  m4Rotate(1); // Creates a identity matrix
 
 		//rotate the object by         this angle    over    this axis
 		//m4Rotate = glm::rotate(m4Rotate, 180.0f, glm::vec3(0.0, 0.0, 1.0));
 
-	for (size_t i = 0; i < targets.size(); i++)
-	{
-		//change position for each one
-		if (i == 0)
+		for (size_t i = 0; i < targets.size(); i++)
 		{
-			//Translate target
-			m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-			m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+			//change position for each one
+			if (i == 0)
+			{
+				//Translate target
+				m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(5, 15, -50.25));
+				//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
+				//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
+			}
+			else if (i == 1)
+			{
+				//Translate target1
+				//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+				//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-25, 10, -50.25));
+			}
+			else if (i == 2)
+			{
+				//Translate target2
+				//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+				//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[2]));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, -50.25));
+			}
+			else if (i == 3)
+			{
+				//Translate targetlerp
+				//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, currPos));
+			}
+
 			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-			//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
+			targets[i]->AddToRenderList(true);
+			targets[i]->SetModelMatrix(m4Scale * m4Translate);
+			//target->PlaySequence();
 		}
-		else if (i == 1)
+
+
+
+		for (size_t i = 0; i < ammoPacks.size(); i++)
 		{
-			//Translate target1
-			//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-			m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[1], 20, tarZ[1]));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
+			//change position for each one
+			if (i == 0)
+			{
+				//Translate ammoPack
+				m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
+				m4Translate = glm::translate(m4Translate, worldOffset * 2);
+			}
+			ammoPacks[i]->AddToRenderList(true);
+			ammoPacks[i]->SetModelMatrix(m4Scale * m4Translate);
+			//ammoPack->PlaySequence();
 		}
-		else if (i == 2)
-		{
-			//Translate target2
-			//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-			m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[2], 20, tarZ[2]));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-		}
-		targets[i]->AddToRenderList(true);
-		targets[i]->SetModelMatrix(m4Scale * m4Translate);
-		//target->PlaySequence();
-	}
-
-		//Translate targetlerp
-		//m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-		m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, currPos));
-		m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
-
-		targetC->AddToRenderList();
-		targetC->SetModelMatrix(m4Scale* m4Translate);
-		targetC->PlaySequence();
-
-		//Translate ammoPak
-		m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-		m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
-		m4Translate = glm::translate(m4Translate, worldOffset * 2);
-
-		ammoPak->AddToRenderList();
-		ammoPak->SetModelMatrix(m4Scale * m4Translate);
-		ammoPak->PlaySequence();
-
-	for (size_t i = 0; i < ammoPacks.size(); i++)
-	{
-		//change position for each one
-		if (i == 0)
-		{
-			//Translate ammoPack
-			m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
-			m4Translate = glm::translate(IDENTITY_M4, vector3(0.0f, 5, 0.0f));
-			m4Translate = glm::translate(m4Translate, worldOffset * 2);
-		}
-		ammoPacks[i]->AddToRenderList(true);
-		ammoPacks[i]->SetModelMatrix(m4Scale * m4Translate);
-		//ammoPack->PlaySequence();
-	}
 
 		/*for (size_t i = 0; i < m_pMeshMngr->GetMeshCount(); i++)
 		{
@@ -516,47 +483,34 @@ void GLFWApp::Display(void)
 	glfwPollEvents();
 }
 
-void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd) 
-{	
-	if (sceneNum == 1) {
-		if (ammo > 0) {
-			score += 5;
-
-			//create bullet
-			Simplex::Entity* bullet = new Entity("bulletSphere.fbx", "bullet");
-		Simplex::RigidBody* bulletRB = bullet->GetRigidBody();
-			//at current mouse position
-			matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
+void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 {
-	/*if (ammo > 0) {
-		//create bullet
-		Simplex::Entity* bullet = new Entity("bulletSphere.fbx", "bullet");*/
-		
-		//Simplex::MyRigidBody* bulletRB = new MyRigidBody(bulletModel->GetVertexList());
+	if (sceneNum == 1 && ammo > 0)
+	{		
+		//score += 5;
 
+		//create bullet
+		Simplex::Entity* bullet = new Entity("bulletSphere.fbx", "bullet");
+		Simplex::RigidBody* bulletRB = bullet->GetRigidBody();
 
 		//at current mouse position
-		//matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
+		matrix4 position = glm::translate(IDENTITY_M4, vector3(pos.x, pos.y - 4, pos.z)); //-4 would be exact camera position for y
 
 		bullet->SetModelMatrix(position);
 		//bulletRB->SetModelMatrix(position);
 		bullet->AddToRenderList();
 
-		//add to list
+		//add to lists
 		bullets.push_back(bullet);
 		bulletRBs.push_back(bulletRB);
+		bulletFwdVecs.push_back(fwd);
 
-			//add fwd vec to list
-			bulletFwdVecs.push_back(fwd);
-
-
-			//subtract Ammo
-			ammo -= 1;
-
-			if (ammo < 1) {
-				changeScene(2);
-			}
-		}
+		//subtract Ammo
+		ammo -= 1;
+	}
+	else
+	{
+		ChangeScene(2);
 	}
 }
 
@@ -570,7 +524,7 @@ float GLFWApp::Random(int min, int max)
 //FSM Scenes
 
 //runs the main scene
-void  GLFWApp::mainScene(void) {
+void  GLFWApp::MainScene(void) {
 	do {
 		Update();
 		Display();
@@ -579,7 +533,7 @@ void  GLFWApp::mainScene(void) {
 }
 
 //runs the main menu
-void  GLFWApp::mainMenuScene(void) {
+void  GLFWApp::MainMenuScene(void) {
 
 	do {
 		Update();
@@ -590,7 +544,7 @@ void  GLFWApp::mainMenuScene(void) {
 }
 
 //runs the game over scene
-void  GLFWApp::gameOverScene(void) {
+void  GLFWApp::GameOverScene(void) {
 	do {
 		Update();
 		Display();
@@ -602,7 +556,7 @@ void  GLFWApp::gameOverScene(void) {
 
 
 //chanes the scene (input scene number)
-void  GLFWApp::changeScene(int x) {
+void  GLFWApp::ChangeScene(int x) {
 	sceneNum = x;
 }
 
@@ -625,7 +579,7 @@ void GLFWApp::Release(void)
 	//SafeDelete(buildingRB);
 
 	//delete all bullets
-	for each (Entity* b in bullets)
+	for each (Entity * b in bullets)
 	{
 		SafeDelete(b);
 	}
@@ -643,7 +597,7 @@ void GLFWApp::Release(void)
 	}
 
 	//delete all targets
-	for each(Entity* t in targets)
+	for each (Entity * t in targets)
 	{
 		SafeDelete(t);
 	}

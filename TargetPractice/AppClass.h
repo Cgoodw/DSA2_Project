@@ -57,6 +57,8 @@ class GLFWApp
 	Simplex::Entity* target = nullptr;
 	Simplex::Entity* targetB = nullptr;
 	Simplex::Entity* targetC = nullptr;
+	Simplex::Entity* targetLerp = nullptr;
+
 	Simplex::Entity* ammoPak = nullptr;
 
 	Simplex::RigidBody* buildingRB = nullptr;
@@ -69,6 +71,7 @@ class GLFWApp
 	Simplex::RigidBody* targetRB = nullptr;
 	Simplex::RigidBody* targetBRB = nullptr;
 	Simplex::RigidBody* targetCRB = nullptr;
+	Simplex::RigidBody* targetLerpRB = nullptr;
 
 	Simplex::Entity* ammoPack = nullptr;
 	Simplex::RigidBody* ammoPackRB = nullptr;
@@ -82,7 +85,7 @@ class GLFWApp
 
 	//scene vars
 	int ammo = 30;
-	int points = 0;
+	//int points = 0;
 	int numTargets = 3;
 	int numBarrels = 2;
 	int numCrates = 4;
@@ -190,15 +193,15 @@ private:
 	float Random(int min, int max);
 
 	//runs the main scene
-	void mainScene(void);
+	void MainScene(void);
 
 	//runs the main menu
-	void mainMenuScene(void);
+	void MainMenuScene(void);
 
 	//runs the game over scene
-	void gameOverScene(void);
+	void GameOverScene(void);
 
-	void changeScene(int x =0);
+	void ChangeScene(int x =0);
 	
 
 	void RemoveBullet(int position);
