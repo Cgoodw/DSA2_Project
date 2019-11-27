@@ -198,7 +198,7 @@ void GLFWApp::Update(void)
 				{
 					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(ammoPackRBs[j]))
 					{
-						cout << "ammo pak collision" << endl;
+						cout << "ammo pack collision" << endl;
 						//should the bullet be removed when colliding with an ammo pak?
 						RemoveBullet(i);
 						break;
