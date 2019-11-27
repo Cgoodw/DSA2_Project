@@ -10,12 +10,9 @@ Date: 2019/11
 #include "Simplex\Simplex.h"
 #include "GLFW\glfw3.h"
 
-
 using namespace Simplex;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-
-
 
 class GLFWApp
 {
@@ -39,53 +36,27 @@ class GLFWApp
 	//current Scene number
 	int sceneNum = 0;
 
-	
-	//Simplex::Model* m_pModel = nullptr; //Model to try
-
-	//TODO: Make these into a list
 	//building the scene
 	Simplex::Entity* building = nullptr;
-	
 	Simplex::Entity* barrel = nullptr;
-	Simplex::Entity* barrelB = nullptr;
-	
 	Simplex::Entity* crate = nullptr;
-	Simplex::Entity* crateB = nullptr;
-	Simplex::Entity* crateC = nullptr;
-	Simplex::Entity* crateD = nullptr;
-	
 	Simplex::Entity* target = nullptr;
-	Simplex::Entity* targetB = nullptr;
-	Simplex::Entity* targetC = nullptr;
-	Simplex::Entity* targetLerp = nullptr;
-
-	Simplex::Entity* ammoPak = nullptr;
+	Simplex::Entity* ammoPack = nullptr;
 
 	Simplex::RigidBody* buildingRB = nullptr;
 	Simplex::RigidBody* crateRB = nullptr;
-	Simplex::RigidBody* crateBRB = nullptr;
-	Simplex::RigidBody* crateCRB = nullptr;
-	Simplex::RigidBody* crateDRB = nullptr;
 	Simplex::RigidBody* barrelRB = nullptr;
-	Simplex::RigidBody* barrelBRB = nullptr;
 	Simplex::RigidBody* targetRB = nullptr;
-	Simplex::RigidBody* targetBRB = nullptr;
-	Simplex::RigidBody* targetCRB = nullptr;
-	Simplex::RigidBody* targetLerpRB = nullptr;
-
-	Simplex::Entity* ammoPack = nullptr;
 	Simplex::RigidBody* ammoPackRB = nullptr;
 
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
-
 
 	//using this cube to hold images
 	Simplex::Model* menuBG = nullptr;
 
 	//scene vars
 	int ammo = 30;
-	//int points = 0;
 	int numTargets = 3;
 	int numBarrels = 2;
 	int numCrates = 4;
@@ -93,9 +64,6 @@ class GLFWApp
 	int score = 0;
 	const float StartPos = 0.0f;
 	int currPos = 0.0f;
-
-	//bullets
-	//Simplex::Model* bulletModel;
 
 	std::vector<Entity*> bullets = std::vector<Entity*>();
 	std::vector<RigidBody*> bulletRBs = std::vector<RigidBody*>();
@@ -202,8 +170,8 @@ private:
 	void GameOverScene(void);
 
 	void ChangeScene(int x =0);
-	
 
+	//deletes and removes bullet at position
 	void RemoveBullet(int position);
 	
 protected:
