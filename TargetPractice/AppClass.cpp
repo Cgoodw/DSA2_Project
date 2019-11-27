@@ -252,7 +252,7 @@ void GLFWApp::Display(void)
 
 	//Main Menu
 	if (sceneNum == 0) {
-		//set backround to black
+		//set background to black
 		glClearColor(C_BLACK.r, C_BLACK.r, C_BLACK.r, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
 
@@ -342,6 +342,7 @@ void GLFWApp::Display(void)
 			if (i == 0)
 			{
 				//Translate target
+				m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
 				m4Translate = glm::translate(IDENTITY_M4, vector3(5, 15, -50.25));
 				//m4Translate = glm::translate(IDENTITY_M4, vector3(tarX[0], 20, tarZ[0]));
 				//m4Rotate = glm::rotateY(vector3(0, 0, 0), 90.0);
@@ -360,7 +361,7 @@ void GLFWApp::Display(void)
 			}
 			else if (i == 3)
 			{
-				//Translate targetlerp
+				//Translate target lerp
 				m4Translate = glm::translate(IDENTITY_M4, vector3(25, 11, currPos));
 			}
 

@@ -84,17 +84,11 @@ void GLFWApp::ProcessMouse(int button, int action, int mods)
 
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
-		//shoot bullets
-		SpawnBullet(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());
-
-		//create object and render on screen
-		//if(!renderBullet)
-			//renderBullet = true; //will now add to render list and display on screen
-
-		//when hits target or ground - don't render object anymore / destroy object
-		//renderBullet = false;
-		//addedBullet = false;
-		
+		if (sceneNum == 1)
+		{
+			//shoot bullets
+			SpawnBullet(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());
+		}		
 	}
 }
 //Joystick
