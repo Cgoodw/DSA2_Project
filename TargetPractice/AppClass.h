@@ -31,50 +31,66 @@ class GLFWApp
 
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
-	
-	//Simplex::Model* m_pModel = nullptr; //Model to try
 
 	//TODO: Make these into a list
 	//building the scene
-	Simplex::Model* building = nullptr;
+	Simplex::Entity* building = nullptr;
+	
+	Simplex::Entity* barrel = nullptr;
+	Simplex::Entity* barrelB = nullptr;
+	
+	Simplex::Entity* crate = nullptr;
+	Simplex::Entity* crateB = nullptr;
+	Simplex::Entity* crateC = nullptr;
+	Simplex::Entity* crateD = nullptr;
+	
+	Simplex::Entity* target = nullptr;
+	Simplex::Entity* targetB = nullptr;
+	Simplex::Entity* targetC = nullptr;
 
-	Simplex::Model* barrel = nullptr;
-	Simplex::Model* barrelB = nullptr;
+	Simplex::RigidBody* buildingRB = nullptr;
+	Simplex::RigidBody* crateRB = nullptr;
+	Simplex::RigidBody* crateBRB = nullptr;
+	Simplex::RigidBody* crateCRB = nullptr;
+	Simplex::RigidBody* crateDRB = nullptr;
+	Simplex::RigidBody* barrelRB = nullptr;
+	Simplex::RigidBody* barrelBRB = nullptr;
+	Simplex::RigidBody* targetRB = nullptr;
+	Simplex::RigidBody* targetBRB = nullptr;
+	Simplex::RigidBody* targetCRB = nullptr;
 
-	Simplex::Model* crate = nullptr;
-	Simplex::Model* crateB = nullptr;
-	Simplex::Model* crateC = nullptr;
-	Simplex::Model* crateD = nullptr;
-
-	Simplex::Model* target = nullptr;
-	Simplex::Model* targetB = nullptr;
-	Simplex::Model* targetC = nullptr;
-
-	MyRigidBody* buildingRB = nullptr;
-	MyRigidBody* crateRB = nullptr;
-	MyRigidBody* crateBRB = nullptr;
-	MyRigidBody* crateCRB = nullptr;
-	MyRigidBody* crateDRB = nullptr;
-	MyRigidBody* barrelRB = nullptr;
-	MyRigidBody* barrelBRB = nullptr;
-	MyRigidBody* targetRB = nullptr;
-	MyRigidBody* targetBRB = nullptr;
-	MyRigidBody* targetCRB = nullptr;
-
-	Simplex::Model* ammoPak = nullptr;
+	Simplex::Entity* ammoPack = nullptr;
+	Simplex::RigidBody* ammoPackRB = nullptr;
 
 	std::vector<float> tarX = std::vector<float>();
 	std::vector<float> tarZ = std::vector<float>();
 
 	//scene vars
 	int ammo = 30;
+	int points = 0;
+	int numTargets = 3;
+	int numBarrels = 2;
+	int numCrates = 4;
+	int numAmmoPacks = 1;
 
 	//bullets
+	//Simplex::Model* bulletModel;
+
 	std::vector<Entity*> bullets = std::vector<Entity*>();
+	std::vector<RigidBody*> bulletRBs = std::vector<RigidBody*>();
 	std::vector<vector3> bulletFwdVecs = std::vector<vector3>();
 
-	//bool renderBullet = false;
-	//bool addedBullet = false;
+	std::vector<Entity*> targets = std::vector<Entity*>();
+	std::vector<RigidBody*> targetRBs = std::vector<RigidBody*>();
+
+	std::vector<Entity*> barrels = std::vector<Entity*>();
+	std::vector<RigidBody*> barrelRBs = std::vector<RigidBody*>();
+	
+	std::vector<Entity*> crates = std::vector<Entity*>();
+	std::vector<RigidBody*> crateRBs = std::vector<RigidBody*>();
+	
+	std::vector<Entity*> ammoPacks = std::vector<Entity*>();
+	std::vector<RigidBody*> ammoPackRBs = std::vector<RigidBody*>();
 
 public:
 	static GLFWApp* m_pSelfPointer; //Used for callbacks
@@ -154,6 +170,8 @@ private:
 
 	//Generates Random Numbers
 	float Random(int min, int max);
+
+	void RemoveBullet(int position);
 	
 protected:
 	/*
