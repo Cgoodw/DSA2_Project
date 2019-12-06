@@ -16,7 +16,7 @@ void GLFWApp::InitVariables(void)
 	menuBG = new Simplex::Model();
 	menuBG->Load("MainMenuBG.FBX");
 
-	building = new Entity("interior.fbx", "building");
+	building = new Entity("interiorUpdated.fbx", "building");
 	buildingRB = building->GetRigidBody();
 
 	for (size_t i = 0; i < numCrates; i++)
@@ -466,11 +466,13 @@ void  GLFWApp::MainMenuScene(void) {
 		Display();
 		Idle();
 	} while (glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_pWindow) == 0);// Check if the ESC key was pressed or the window was closed
+	
 
 }
 
 //runs the game over scene
 void  GLFWApp::GameOverScene(void) {
+
 	do {
 		Update();
 		Display();
