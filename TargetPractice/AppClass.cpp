@@ -16,7 +16,7 @@ void GLFWApp::InitVariables(void)
 	menuBG = new Simplex::Model();
 	menuBG->Load("MainMenuBG.FBX");
 
-	building = new Entity("interior.fbx", "building");
+	building = new Entity("interiorUpdated.fbx", "building");
 	buildingRB = building->GetRigidBody();
 
 	for (size_t i = 0; i < numCrates; i++)
@@ -77,6 +77,7 @@ void GLFWApp::Update(void)
 
 	//Main Menu Scene
 	if (sceneNum == 0) {
+		timeRemaining = 6000;
 		//reset camera view to center
 		m_pCameraMngr->SetPositionTargetAndUpward(vector3(0, 4.5, 15), vector3(0, 2.5, 0), vector3(0, 1, 0), 0);
 
@@ -100,6 +101,10 @@ void GLFWApp::Update(void)
 
 	//Main Game Scene
 	if (sceneNum == 1) {
+		timeRemaining -= 1;
+		if (timeRemaining <= 0) {
+			ChangeScene(2);
+		}
 		glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
 		//Is the arcball active?
@@ -153,7 +158,11 @@ void GLFWApp::Update(void)
 		m_pMeshMngr->Print(std::to_string(ammo), C_RED);
 
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
-		m_pMeshMngr->Print(std::to_string(score), C_RED);
+		m_pMeshMngr->PrintLine(std::to_string(score), C_RED);
+		m_pMeshMngr->Print("Time Remaining: ", C_RED);
+		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
+		//m_pMeshMngr->Print("", C_RED);
+		cout << timeRemaining << endl;
 
 		//garbage ended
 
@@ -457,11 +466,13 @@ void  GLFWApp::MainMenuScene(void) {
 		Display();
 		Idle();
 	} while (glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_pWindow) == 0);// Check if the ESC key was pressed or the window was closed
+	
 
 }
 
 //runs the game over scene
 void  GLFWApp::GameOverScene(void) {
+
 	do {
 		Update();
 		Display();

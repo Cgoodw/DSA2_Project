@@ -64,6 +64,7 @@ class GLFWApp
 	int score = 0;
 	const float StartPos = 0.0f;
 	int currPos = 0.0f;
+	int timeRemaining = 6000;
 
 	std::vector<Entity*> bullets = std::vector<Entity*>();
 	std::vector<RigidBody*> bulletRBs = std::vector<RigidBody*>();
