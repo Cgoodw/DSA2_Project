@@ -159,9 +159,9 @@ void GLFWApp::Update(void)
 
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
 		m_pMeshMngr->PrintLine(std::to_string(score), C_RED);
-		m_pMeshMngr->Print("/nTime Remaining: " + timeRemaining, C_RED);
+		m_pMeshMngr->Print("Time Remaining: ", C_RED);
 		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
-		m_pMeshMngr->Print("", C_RED);
+		//m_pMeshMngr->Print("", C_RED);
 		cout << timeRemaining << endl;
 
 		//garbage ended
