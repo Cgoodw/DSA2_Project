@@ -57,6 +57,38 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 
 	}
 
+	//Up Right
+	if (key == GLFW_KEY_W && key == GLFW_KEY_D)
+	{
+		worldOffset -= (fwd * fSpeed);
+		worldOffset -= (right * fSpeed);
+
+	}
+
+	//Up Left
+	if (key == GLFW_KEY_W && key == GLFW_KEY_A)
+	{
+		worldOffset -= (fwd * fSpeed);
+		worldOffset -= (right * fSpeed);
+
+	}
+
+	//Down Right
+	if (key == GLFW_KEY_S && key == GLFW_KEY_D)
+	{
+		worldOffset -= (fwd * fSpeed);
+		worldOffset -= (right * fSpeed);
+
+	}
+
+	//Down Left
+	if (key == GLFW_KEY_S && key == GLFW_KEY_A)
+	{
+		worldOffset -= (fwd * fSpeed);
+		worldOffset -= (right * fSpeed);
+
+	}
+
 	if (key == GLFW_KEY_LEFT_SHIFT)
 	{
 		sprinting = !sprinting;
