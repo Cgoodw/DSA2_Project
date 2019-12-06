@@ -200,7 +200,7 @@ void GLFWApp::Update(void)
 					{
 						cout << "ammo pack collision" << endl;
 						//should the bullet be removed when colliding with an ammo pak?
-						RemoveBullet(i);
+						//RemoveBullet(i);
 						break;
 					}
 				}
