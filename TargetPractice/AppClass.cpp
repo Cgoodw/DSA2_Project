@@ -77,6 +77,7 @@ void GLFWApp::Update(void)
 
 	//Main Menu Scene
 	if (sceneNum == 0) {
+		timeRemaining = 6000;
 		//reset camera view to center
 		m_pCameraMngr->SetPositionTargetAndUpward(vector3(0, 4.5, 15), vector3(0, 2.5, 0), vector3(0, 1, 0), 0);
 
@@ -100,6 +101,10 @@ void GLFWApp::Update(void)
 
 	//Main Game Scene
 	if (sceneNum == 1) {
+		timeRemaining -= 1;
+		if (timeRemaining <= 0) {
+			ChangeScene(2);
+		}
 		glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
 		//Is the arcball active?
@@ -153,7 +158,11 @@ void GLFWApp::Update(void)
 		m_pMeshMngr->Print(std::to_string(ammo), C_RED);
 
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
-		m_pMeshMngr->Print(std::to_string(score), C_RED);
+		m_pMeshMngr->PrintLine(std::to_string(score), C_RED);
+		m_pMeshMngr->Print("/nTime Remaining: " + timeRemaining, C_RED);
+		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
+		m_pMeshMngr->Print("", C_RED);
+		cout << timeRemaining << endl;
 
 		//garbage ended
 
