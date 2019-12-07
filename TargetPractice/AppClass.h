@@ -174,6 +174,8 @@ private:
 
 	//deletes and removes bullet at position
 	void RemoveBullet(int position);
+
+	void RemoveCrate(int position);
 	
 protected:
 	/*
