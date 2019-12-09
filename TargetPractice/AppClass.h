@@ -45,6 +45,9 @@ class GLFWApp
 	Simplex::Entity* target = nullptr;
 	Simplex::Entity* ammoPack = nullptr;
 
+	Simplex::Entity* gun = nullptr;
+
+
 	Simplex::Entity* wall = nullptr;
 	Simplex::RigidBody* wallRB = nullptr;
 

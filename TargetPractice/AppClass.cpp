@@ -22,6 +22,8 @@ void GLFWApp::InitVariables(void)
 	//m_pEntityManager->AddEntity("crate.fbx", "Cube_Player");
 	//m_pEntityManager->UsePhysicsSolver();
 
+	gun= new Entity("gunTest.fbx", "gun");
+
 	for (size_t i = 0; i < numCrates; i++)
 	{
 		//m_pEntityManager->AddEntity("crate.fbx", "Cube_" + std::to_string(i));
@@ -354,10 +356,21 @@ void GLFWApp::Display(void)
 		building->AddToRenderList();
 		building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
 
+		
+
 		//set the scale matrix to shrink all the models
 		matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 		matrix4 m4Translate;
+
+		matrix4 m4Rotate;
+
+		m4Translate = glm::translate(IDENTITY_M4, vector3(0, 3 , 15));
+
+		//m4Rotate = glm::rotate(quaternion(IDENTITY_M4),m_pCameraMngr->GetForward());
+		
+		//gun->SetModelMatrix(m4Scale *m4Translate);
+		//gun->AddToRenderList();
 
 		for (size_t i = 0; i < crates.size(); i++)
 		{
@@ -473,32 +486,32 @@ void GLFWApp::Display(void)
 			if (i == 3)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(-15, 0, 10));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-15, 0, 11));
 			}
 			if (i == 4)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(-9.69, 0, 10));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-9.69, 0, 11));
 			}
 			if (i == 5)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(-4.38, 0, 10));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-4.38, 0, 11));
 			}
 			if (i == 6)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(0.93, 0, 10));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0.93, 0, 11));
 			}
 			if (i == 7)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(13.69,0, 3));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(13.69,0, 2));
 			}
 			if (i == 8)
 			{
 				//Translate wall
-				m4Translate = glm::translate(IDENTITY_M4, vector3(8.38, 0, 3));
+				m4Translate = glm::translate(IDENTITY_M4, vector3(8.38, 0, 2));
 				
 			}
 			m4Scale = glm::scale(IDENTITY_M4, vector3(1));
