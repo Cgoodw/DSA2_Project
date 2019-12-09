@@ -12,15 +12,23 @@ void GLFWApp::InitVariables(void)
 	//FPS Camera is true
 	m_bFPC = true;
 
-
 	menuBG = new Simplex::Model();
 	menuBG->Load("MainMenuBG.FBX");
 
 	building = new Entity("interiorUpdated.fbx", "building");
 	buildingRB = building->GetRigidBody();
 
+
+	//m_pEntityManager->AddEntity("crate.fbx", "Cube_Player");
+	//m_pEntityManager->UsePhysicsSolver();
+
 	for (size_t i = 0; i < numCrates; i++)
 	{
+		//m_pEntityManager->AddEntity("crate.fbx", "Cube_" + std::to_string(i));
+		//
+		//matrix4 m4Position = glm::translate(vector3((i*5)-5, (i * 5) + 5, (i * 5) + 5));
+		//m_pEntityManager->SetModelMatrix(m4Position * glm::scale(vector3(1)));
+		//m_pEntityManager->UsePhysicsSolver();
 		crate = new Entity("crate.fbx", "crate");
 		crates.push_back(crate);
 		crateRB = crate->GetRigidBody();
@@ -49,6 +57,14 @@ void GLFWApp::InitVariables(void)
 		ammoPacks.push_back(ammoPack);
 		ammoPackRB = ammoPack->GetRigidBody();
 		ammoPackRBs.push_back(ammoPackRB);
+	}
+
+	for (size_t i = 0; i < numWalls; i++)
+	{
+		wall = new Entity("wall.fbx", "wall");
+		walls.push_back(wall);
+		wallRB = wall->GetRigidBody();
+		wallRBs.push_back(wallRB);
 	}
 
 	//current Scene number
@@ -101,6 +117,21 @@ void GLFWApp::Update(void)
 
 	//Main Game Scene
 	if (sceneNum == 1) {
+
+		////Update Entity Manager
+		//m_pEntityManager->Update();
+		//
+		//
+		//m_pEntityManager->SetModelMatrix(matrix4(-1,0,0,0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0),"Cube_Player");
+		//
+		//for (size_t i = 0; i < numCrates; i++)
+		//{
+		//	int x = m_pEntityManager->GetEntityIndex("Cube_" + std::to_string(i));
+		//	m_pEntityManager->SetPosition(vector4(worldOffset,0), x);
+		//	m_pEntityManager->AddEntityToRenderList(x, true);
+		//}
+		//
+
 		timeRemaining -= 1;
 		if (timeRemaining <= 0) {
 			ChangeScene(2);
@@ -159,8 +190,15 @@ void GLFWApp::Update(void)
 
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
 		m_pMeshMngr->PrintLine(std::to_string(score), C_RED);
+
 		m_pMeshMngr->Print("Time Remaining: ", C_RED);
-		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
+		m_pMeshMngr->Print(std::to_string(timeRemaining/6000), C_WHITE);
+		m_pMeshMngr->Print(":");
+
+		if (timeRemaining / 100 < 10) {
+			m_pMeshMngr->Print(std::to_string(0), C_WHITE);
+		}
+		m_pMeshMngr->Print(std::to_string(timeRemaining / 100), C_WHITE);
 		//m_pMeshMngr->Print("", C_RED);
 		//cout << timeRemaining << endl;
 
@@ -221,6 +259,16 @@ void GLFWApp::Update(void)
 						RemoveAmmoPack(j);
 						RemoveBullet(i);
 						
+						break;
+					}
+				}
+				for (int j = 0; j < wallRBs.size(); j++)
+				{
+					if (bulletRBs.size() > i&& IsColliding(bulletRBs[i], wallRBs[j]))
+					{
+
+						RemoveBullet(i);
+
 						break;
 					}
 				}
@@ -404,6 +452,61 @@ void GLFWApp::Display(void)
 			ammoPacks[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
 
+		for (size_t i = 0; i < walls.size(); i++)
+		{
+			//change position for each one
+			if (i == 0)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(5.31, 0, -10));
+			}
+			if (i == 1)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0, 0, -10));
+			}
+			if (i == 2)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-19, 0, 0));
+			}
+			if (i == 3)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-15, 0, 10));
+			}
+			if (i == 4)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-9.69, 0, 10));
+			}
+			if (i == 5)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-4.38, 0, 10));
+			}
+			if (i == 6)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0.93, 0, 10));
+			}
+			if (i == 7)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(13.69,0, 3));
+			}
+			if (i == 8)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(8.38, 0, 3));
+				
+			}
+			m4Scale = glm::scale(IDENTITY_M4, vector3(1));
+			m4Translate = glm::translate(m4Translate, worldOffset);
+			walls[i]->AddToRenderList();
+			walls[i]->SetModelMatrix(m4Scale * m4Translate);
+		}
+
 		/*for (size_t i = 0; i < m_pMeshMngr->GetMeshCount(); i++)
 		{
 			Mesh* current = m_pMeshMngr->GetMesh(i);
@@ -578,6 +681,12 @@ void GLFWApp::Release(void)
 	for each (Entity * a in ammoPacks)
 	{
 		SafeDelete(a);
+	}
+
+	//delete all barrels
+	for each (Entity * w in walls)
+	{
+		SafeDelete(w);
 	}
 
 	SafeDelete(menuBG);

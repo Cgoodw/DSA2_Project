@@ -26,6 +26,8 @@ class GLFWApp
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
+	EntityManager* m_pEntityManager = nullptr;
+
 
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
@@ -42,6 +44,10 @@ class GLFWApp
 	Simplex::Entity* crate = nullptr;
 	Simplex::Entity* target = nullptr;
 	Simplex::Entity* ammoPack = nullptr;
+
+	Simplex::Entity* wall = nullptr;
+	Simplex::RigidBody* wallRB = nullptr;
+
 
 	Simplex::RigidBody* buildingRB = nullptr;
 	Simplex::RigidBody* crateRB = nullptr;
@@ -61,6 +67,7 @@ class GLFWApp
 	int numBarrels = 2;
 	int numCrates = 4;
 	int numAmmoPacks = 1;
+	int numWalls = 9;
 	int score = 0;
 	const float StartPos = 0.0f;
 	int currPos = 0.0f;
@@ -81,6 +88,9 @@ class GLFWApp
 	
 	std::vector<Entity*> ammoPacks = std::vector<Entity*>();
 	std::vector<RigidBody*> ammoPackRBs = std::vector<RigidBody*>();
+
+	std::vector<Entity*> walls = std::vector<Entity*>();
+	std::vector<RigidBody*> wallRBs = std::vector<RigidBody*>();
 
 public:
 	static GLFWApp* m_pSelfPointer; //Used for callbacks

@@ -364,7 +364,7 @@ void MeshManager::AddSkyboxToRenderList(String a_sFileName)
 	*/
 	if (nMeshIndex < 0)
 	{
-		nMeshIndex = GetMeshIndex("Skybox_Skybox.png");
+		nMeshIndex = GetMeshIndex("Skybox_Skybox02.png");
 		//if the mesh for the skybox does not exist do nothing
 		if (nMeshIndex < 0)
 			return;

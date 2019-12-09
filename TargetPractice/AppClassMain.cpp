@@ -66,6 +66,7 @@ void GLFWApp::Init(void)
 	m_pSystem = SystemSingleton::GetInstance();
 	m_pMeshMngr = MeshManager::GetInstance();
 	m_pCameraMngr = CameraManager::GetInstance();
+	m_pEntityManager = EntityManager::GetInstance();
 	//Change size of render target
 	Reshape();
 	//Init App variables
