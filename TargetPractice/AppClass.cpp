@@ -174,7 +174,7 @@ void GLFWApp::Update(void)
 				//check for collisions with all objects and if so destroy
 				for (int j = 0; j < targetRBs.size(); j++)
 				{
-					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], targetRBs[j]))
+					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], targetRBs[j]))
 					{
 						cout << "target collision" << endl;
 
@@ -188,7 +188,7 @@ void GLFWApp::Update(void)
 				
 				for (int j = 0; j < crateRBs.size(); j++)
 				{
-					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], crateRBs[j]))
+					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], crateRBs[j]))
 					{
 						cout << "crate collision" << endl;
 
@@ -201,7 +201,7 @@ void GLFWApp::Update(void)
 				for (int j = 0; j < barrelRBs.size(); j++)
 				{
 					
-					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], barrelRBs[j]))
+					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], barrelRBs[j]))
 					{
 						cout << "barrel collision" << endl;
 						RemoveBullet(i);
@@ -213,7 +213,7 @@ void GLFWApp::Update(void)
 				}
 				for (int j = 0; j < ammoPackRBs.size(); j++)
 				{
-					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], ammoPackRBs[j]))
+					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], ammoPackRBs[j]))
 					{
 						cout << "ammo pack collision" << endl;
 
