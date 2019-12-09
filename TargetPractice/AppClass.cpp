@@ -445,10 +445,10 @@ void GLFWApp::SpawnBullet(vector3 pos, vector3 fwd)
 		//subtract Ammo
 		ammo -= 1;
 	}
-	else
+	/*else
 	{
 		ChangeScene(2);
-	}
+	}*/
 }
 
 float GLFWApp::Random(int min, int max)
