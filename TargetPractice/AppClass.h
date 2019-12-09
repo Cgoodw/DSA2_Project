@@ -175,7 +175,10 @@ private:
 	//deletes and removes bullet at position
 	void RemoveBullet(int position);
 
-	void RemoveCrate(int position);
+	void RemoveAmmoPack(int position);
+
+	//checks for collision between two objects
+	bool IsColliding(RigidBody* rb, RigidBody* otherRB);
 	
 protected:
 	/*

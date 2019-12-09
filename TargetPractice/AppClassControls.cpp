@@ -14,7 +14,7 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 	
 
 	//keysPressed.push_back(GLFW_PRESS);
-	std::cout << "Key: " << GLFW_RELEASE << std::endl;
+	//std::cout << "Key: " << GLFW_RELEASE << std::endl;
 	//keysPressed.pop_back();
 #pragma region Camera Positioning
 	float fSpeed = 0.25f;

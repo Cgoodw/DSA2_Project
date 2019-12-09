@@ -56,12 +56,12 @@ void GLFWApp::InitVariables(void)
 
 	for (int i = 0; i < 3; i++) {
 		tarX.push_back(Random(5, 40));
-		cout << tarX[i] << endl;
+		//cout << tarX[i] << endl;
 	}
 
 	for (int i = 0; i < 3; i++) {
 		tarZ.push_back(Random(5, 40));
-		cout << tarZ[i] << endl;
+		//cout << tarZ[i] << endl;
 	}
 }
 void GLFWApp::Update(void)
@@ -162,64 +162,50 @@ void GLFWApp::Update(void)
 		m_pMeshMngr->Print("Time Remaining: ", C_RED);
 		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
 		//m_pMeshMngr->Print("", C_RED);
-		cout << timeRemaining << endl;
+		//cout << timeRemaining << endl;
 
 		//garbage ended
 
 		//list of bullets
 		if (bullets.size() > 0)
 		{
-			bool bulletsExist = true;
 			for (int i = 0; i < bullets.size(); i++)
 			{
 				//check for collisions with all objects and if so destroy
 				for (int j = 0; j < targetRBs.size(); j++)
 				{
-					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(targetRBs[j]))
+					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], targetRBs[j]))
 					{
 						cout << "target collision" << endl;
 
 						score++;
 
 						RemoveBullet(i);
-						//check if last bullet was removed
-						if (bulletRBs.size() == 0)
-						{
-							bulletsExist = false;
-						}
+
 						break;
 					}
 				}
 				
 				for (int j = 0; j < crateRBs.size(); j++)
 				{
-					if (bulletsExist && bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(crateRBs[j]))
+					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], crateRBs[j]))
 					{
 						cout << "crate collision" << endl;
-						ammo += 10;
-						RemoveCrate(j);
+
 						RemoveBullet(i);
-						//check if last bullet was removed
-						if (bulletRBs.size() == 0)
-						{
-							bulletsExist = false;
-						}
+
 						break;
 					}
 				}
-				crateRBs.size();
+
 				for (int j = 0; j < barrelRBs.size(); j++)
 				{
 					
-					if (bulletsExist && bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(barrelRBs[j]))
+					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], barrelRBs[j]))
 					{
 						cout << "barrel collision" << endl;
 						RemoveBullet(i);
-						//check if last bullet was removed
-						if (bulletRBs.size() == 0)
-						{
-							bulletsExist = false;
-						}
+
 						break;
 						//add bounce back?
 					}
@@ -227,11 +213,14 @@ void GLFWApp::Update(void)
 				}
 				for (int j = 0; j < ammoPackRBs.size(); j++)
 				{
-					if (bulletRBs.size() > 0 && bulletRBs[i]->IsColliding(ammoPackRBs[j]))
+					if (bulletRBs.size() > 0 && IsColliding(bulletRBs[i], ammoPackRBs[j]))
 					{
 						cout << "ammo pack collision" << endl;
-						//should the bullet be removed when colliding with an ammo pak?
-						//RemoveBullet(i);
+
+						ammo += 10;
+						RemoveAmmoPack(j);
+						RemoveBullet(i);
+						
 						break;
 					}
 				}
@@ -521,12 +510,38 @@ void GLFWApp::RemoveBullet(int position)
 	bulletFwdVecs.erase(bulletFwdVecs.begin() + position);
 }
 
-void GLFWApp::RemoveCrate(int position)
+void GLFWApp::RemoveAmmoPack(int position)
 {
-	SafeDelete(crates[position]);
+	SafeDelete(ammoPacks[position]);
 
-	crateRBs.erase(crateRBs.begin() + position);
-	crates.erase(crates.begin() + position);
+	ammoPackRBs.erase(ammoPackRBs.begin() + position);
+	ammoPacks.erase(ammoPacks.begin() + position);
+}
+
+bool GLFWApp::IsColliding(RigidBody* rb, RigidBody* otherRB)
+{
+	vector3 min = rb->GetMinGlobal();
+	vector3 max = rb->GetMaxGlobal();
+
+	vector3 otherMin = otherRB->GetMinGlobal();
+	vector3 otherMax = otherRB->GetMaxGlobal();
+
+	if (otherMax.x < min.x) 
+		return false;
+	if (otherMin.x > max.x) 
+		return false;
+
+	if (otherMax.y < min.y) 
+		return false;
+	if (otherMin.y > max.y) 
+		return false;
+
+	if (otherMax.z < min.z) 
+		return false;
+	if (otherMin.z > max.z) 
+		return false;
+
+	return true;
 }
 
 void GLFWApp::Release(void)
