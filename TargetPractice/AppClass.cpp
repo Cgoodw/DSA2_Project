@@ -52,7 +52,20 @@ void GLFWApp::InitVariables(void)
 		targetRB = target->GetRigidBody();
 		targetRBs.push_back(targetRB);
 	}
-
+	//add target positions
+	targetVectors.push_back(vector3(5, 15, -50.25));
+	targetVectors.push_back(vector3(-25, 10, -50.25));
+	targetVectors.push_back(vector3(25, 11, -50.25));
+	targetVectors.push_back(vector3(5, 11, -16.5));
+	targetVectors.push_back(vector3(-15, 11, 25));
+	targetVectors.push_back(vector3(-15, 11, 22));//5: rotate 180
+	targetVectors.push_back(vector3(13.69, 11, 5));
+	targetVectors.push_back(vector3(45, 2, 15));//6: rotate +90
+	targetVectors.push_back(vector3(45, 20, -22));
+	targetVectors.push_back(vector3(-47, 2, 15));//9: rotate -90
+	targetVectors.push_back(vector3(-47, 20, -22));
+	//targetVectors.push_back();
+		
 	for (size_t i = 0; i < numAmmoPacks; i++)
 	{
 		ammoPack = new Entity("ammo.fbx", "ammoPack");
@@ -217,6 +230,12 @@ void GLFWApp::Update(void)
 					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], targetRBs[j]))
 					{
 						cout << "target collision" << endl;
+						//cycle to next target in list, and check if targets should loop back to 0
+						currentTarget++;
+						if (currentTarget > targetVectors.size() - 1)
+						{
+							currentTarget = 0;
+						}
 
 						score++;
 
@@ -417,6 +436,7 @@ void GLFWApp::Display(void)
 			barrels[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
 
+		/*
 		for (size_t i = 0; i < targets.size(); i++)
 		{
 			//change position for each one
@@ -450,6 +470,27 @@ void GLFWApp::Display(void)
 			targets[i]->AddToRenderList();
 			targets[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
+		*/
+		//process single target
+		m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+		m4Translate = glm::translate(IDENTITY_M4, targetVectors[currentTarget]);
+		m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
+		m4Rotate = IDENTITY_M4;
+		if (currentTarget > 4 && currentTarget < 7)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, 3.14159f, vector3(0, 1, 0));
+		}
+		else if (currentTarget >= 7 && currentTarget < 9)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, -1.5708f, vector3(0, 1, 0));
+		}
+		else if(currentTarget >= 9)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, 1.5708f, vector3(0, 1, 0));
+		}
+		
+		targets[0]->AddToRenderList();
+		targets[0]->SetModelMatrix(m4Scale* m4Translate * m4Rotate);
 
 		for (size_t i = 0; i < ammoPacks.size(); i++)
 		{

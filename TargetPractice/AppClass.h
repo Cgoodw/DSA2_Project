@@ -34,6 +34,12 @@ class GLFWApp
 
 	std::vector<int> keysPressed = std::vector<int>();
 	bool sprinting = 0;
+	//==TARGETS==
+
+	//store all possible target positions
+	std::vector<vector3> targetVectors;
+	//which position from list to use
+	int currentTarget = 0;
 
 	//current Scene number
 	int sceneNum = 0;
@@ -66,7 +72,7 @@ class GLFWApp
 
 	//scene vars
 	int ammo = 30;
-	int numTargets = 3;
+	int numTargets = 1;
 	int numBarrels = 2;
 	int numCrates = 4;
 	int numAmmoPacks = 1;
