@@ -24,6 +24,10 @@ void GLFWApp::InitVariables(void)
 
 	gun= new Entity("gunTest.fbx", "gun");
 
+
+	playerE = new Entity("crate.fbx", "PlayerBox");
+	playerRB = playerE->GetRigidBody();
+
 	for (size_t i = 0; i < numCrates; i++)
 	{
 		//m_pEntityManager->AddEntity("crate.fbx", "Cube_" + std::to_string(i));
@@ -219,12 +223,167 @@ void GLFWApp::Update(void)
 
 		//garbage ended
 
-		//list of bullets
-		if (bullets.size() > 0)
+		
+		//check for all player collisions
+
+		//using AABB to check and then lock the normal of movement
+		for (int j = 0; j < crateRBs.size(); j++)
 		{
+			if (IsColliding(playerRB, crateRBs[j])) {
+
+				//get collision direction
+				if (crateRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "crate collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+
+						//potentially move the object after collision
+						//crateRBs[j]->SetModelMatrix(crateRBs[j]->GetModelMatrix());
+					}
+				}
+				if (crateRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "crate collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (crateRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "crate collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+					
+				}
+				if (crateRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "crate collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		for (int j = 0; j < barrelRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, barrelRBs[j])) {
+
+				//get collision direction
+				if (barrelRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "barrel collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (barrelRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "barrel collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (barrelRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "barrel collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (barrelRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "barrel collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+
+		}
+		for (int j = 0; j < ammoPackRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, ammoPackRBs[j])) {
+
+				//get collision direction
+				if (ammoPackRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "ammoPack collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (ammoPackRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "ammoPack collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (ammoPackRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "ammoPack collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (ammoPackRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "ammoPack collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		for (int j = 0; j < wallRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, wallRBs[j])) {
+
+				//get collision direction
+				if (wallRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "wall collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (wallRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "wall collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (wallRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "wall collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (wallRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "wall collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		//list of bullets
 			for (int i = 0; i < bullets.size(); i++)
 			{
-				//check for collisions with all objects and if so destroy
+				//check for collisions with all objects and if so destroy  
+				
 				for (int j = 0; j < targetRBs.size(); j++)
 				{
 					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], targetRBs[j]))
@@ -243,6 +402,9 @@ void GLFWApp::Update(void)
 
 						break;
 					}
+
+					
+
 				}
 				
 				for (int j = 0; j < crateRBs.size(); j++)
@@ -254,6 +416,10 @@ void GLFWApp::Update(void)
 						RemoveBullet(i);
 
 						break;
+					}
+
+					if (IsColliding(playerRB, crateRBs[j])) {
+						cout << "crate collision PLAYER" << endl;
 					}
 				}
 
@@ -267,6 +433,10 @@ void GLFWApp::Update(void)
 
 						break;
 						//add bounce back?
+					}
+
+					if (IsColliding(playerRB, barrelRBs[j])) {
+						cout << "barrel collision PLAYER" << endl;
 					}
 					
 				}
@@ -282,6 +452,10 @@ void GLFWApp::Update(void)
 						
 						break;
 					}
+
+					if (IsColliding(playerRB,ammoPackRBs[j])) {
+						cout << "ammoPack collision PLAYER" << endl;
+					}
 				}
 				for (int j = 0; j < wallRBs.size(); j++)
 				{
@@ -292,9 +466,13 @@ void GLFWApp::Update(void)
 
 						break;
 					}
+
+					if (IsColliding(playerRB, wallRBs[j])) {
+						cout << "wall collision PLAYER" << endl;
+					}
 				}
 			}
-		}
+
 		//if there are still bullets left, move them
 		if (bullets.size() > 0)
 		{
@@ -376,6 +554,13 @@ void GLFWApp::Display(void)
 		building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
 
 		
+
+
+		//set player RB
+
+		playerE->AddToRenderList();
+		playerE->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f))*glm::translate(IDENTITY_M4, vector3(0,5, 29)));
+
 
 		//set the scale matrix to shrink all the models
 		matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
@@ -700,6 +885,7 @@ bool GLFWApp::IsColliding(RigidBody* rb, RigidBody* otherRB)
 
 	return true;
 }
+
 
 void GLFWApp::Release(void)
 {
