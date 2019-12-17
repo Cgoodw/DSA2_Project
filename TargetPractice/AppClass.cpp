@@ -12,15 +12,29 @@ void GLFWApp::InitVariables(void)
 	//FPS Camera is true
 	m_bFPC = true;
 
-
 	menuBG = new Simplex::Model();
 	menuBG->Load("MainMenuBG.FBX");
 
 	building = new Entity("interiorUpdated.fbx", "building");
 	buildingRB = building->GetRigidBody();
 
+
+	//m_pEntityManager->AddEntity("crate.fbx", "Cube_Player");
+	//m_pEntityManager->UsePhysicsSolver();
+
+	gun= new Entity("gunTest.fbx", "gun");
+
+
+	playerE = new Entity("crate.fbx", "PlayerBox");
+	playerRB = playerE->GetRigidBody();
+
 	for (size_t i = 0; i < numCrates; i++)
 	{
+		//m_pEntityManager->AddEntity("crate.fbx", "Cube_" + std::to_string(i));
+		//
+		//matrix4 m4Position = glm::translate(vector3((i*5)-5, (i * 5) + 5, (i * 5) + 5));
+		//m_pEntityManager->SetModelMatrix(m4Position * glm::scale(vector3(1)));
+		//m_pEntityManager->UsePhysicsSolver();
 		crate = new Entity("crate.fbx", "crate");
 		crates.push_back(crate);
 		crateRB = crate->GetRigidBody();
@@ -42,13 +56,34 @@ void GLFWApp::InitVariables(void)
 		targetRB = target->GetRigidBody();
 		targetRBs.push_back(targetRB);
 	}
-
+	//add target positions
+	targetVectors.push_back(vector3(5, 15, -50.25));
+	targetVectors.push_back(vector3(-25, 10, -50.25));
+	targetVectors.push_back(vector3(25, 11, -50.25));
+	targetVectors.push_back(vector3(5, 11, -16.5));
+	targetVectors.push_back(vector3(-15, 11, 25));
+	targetVectors.push_back(vector3(-15, 11, 22));//5: rotate 180
+	targetVectors.push_back(vector3(13.69, 11, 5));
+	targetVectors.push_back(vector3(45, 2, 15));//6: rotate +90
+	targetVectors.push_back(vector3(45, 20, -22));
+	targetVectors.push_back(vector3(-47, 2, 15));//9: rotate -90
+	targetVectors.push_back(vector3(-47, 20, -22));
+	//targetVectors.push_back();
+		
 	for (size_t i = 0; i < numAmmoPacks; i++)
 	{
 		ammoPack = new Entity("ammo.fbx", "ammoPack");
 		ammoPacks.push_back(ammoPack);
 		ammoPackRB = ammoPack->GetRigidBody();
 		ammoPackRBs.push_back(ammoPackRB);
+	}
+
+	for (size_t i = 0; i < numWalls; i++)
+	{
+		wall = new Entity("wall.fbx", "wall");
+		walls.push_back(wall);
+		wallRB = wall->GetRigidBody();
+		wallRBs.push_back(wallRB);
 	}
 
 	//current Scene number
@@ -101,6 +136,21 @@ void GLFWApp::Update(void)
 
 	//Main Game Scene
 	if (sceneNum == 1) {
+
+		////Update Entity Manager
+		//m_pEntityManager->Update();
+		//
+		//
+		//m_pEntityManager->SetModelMatrix(matrix4(-1,0,0,0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0),"Cube_Player");
+		//
+		//for (size_t i = 0; i < numCrates; i++)
+		//{
+		//	int x = m_pEntityManager->GetEntityIndex("Cube_" + std::to_string(i));
+		//	m_pEntityManager->SetPosition(vector4(worldOffset,0), x);
+		//	m_pEntityManager->AddEntityToRenderList(x, true);
+		//}
+		//
+
 		timeRemaining -= 1;
 		if (timeRemaining <= 0) {
 			ChangeScene(2);
@@ -159,24 +209,192 @@ void GLFWApp::Update(void)
 
 		m_pMeshMngr->Print("                                           Score: ", C_RED);
 		m_pMeshMngr->PrintLine(std::to_string(score), C_RED);
+
 		m_pMeshMngr->Print("Time Remaining: ", C_RED);
-		m_pMeshMngr->PrintLine(std::to_string(timeRemaining), C_RED);
+		m_pMeshMngr->Print(std::to_string(timeRemaining/6000), C_WHITE);
+		m_pMeshMngr->Print(":");
+
+		if (timeRemaining / 100 < 10) {
+			m_pMeshMngr->Print(std::to_string(0), C_WHITE);
+		}
+		m_pMeshMngr->Print(std::to_string(timeRemaining / 100), C_WHITE);
 		//m_pMeshMngr->Print("", C_RED);
 		//cout << timeRemaining << endl;
 
 		//garbage ended
 
-		//list of bullets
-		if (bullets.size() > 0)
+		
+		//check for all player collisions
+
+		//using AABB to check and then lock the normal of movement
+		for (int j = 0; j < crateRBs.size(); j++)
 		{
+			if (IsColliding(playerRB, crateRBs[j])) {
+
+				//get collision direction
+				if (crateRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "crate collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+
+						//potentially move the object after collision
+						//crateRBs[j]->SetModelMatrix(crateRBs[j]->GetModelMatrix());
+					}
+				}
+				if (crateRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "crate collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (crateRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "crate collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+					
+				}
+				if (crateRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "crate collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		for (int j = 0; j < barrelRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, barrelRBs[j])) {
+
+				//get collision direction
+				if (barrelRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "barrel collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (barrelRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "barrel collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (barrelRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "barrel collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (barrelRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "barrel collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+
+		}
+		for (int j = 0; j < ammoPackRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, ammoPackRBs[j])) {
+
+				//get collision direction
+				if (ammoPackRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "ammoPack collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (ammoPackRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "ammoPack collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (ammoPackRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "ammoPack collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (ammoPackRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "ammoPack collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		for (int j = 0; j < wallRBs.size(); j++)
+		{
+			if (IsColliding(playerRB, wallRBs[j])) {
+
+				//get collision direction
+				if (wallRBs[j]->GetMinGlobal().x > playerRB->GetCenterGlobal().x) {
+					//cout << "wall collision PLAYER x>" << endl;
+					if (worldOffset.x < prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (wallRBs[j]->GetMaxGlobal().x < playerRB->GetCenterGlobal().x) {
+					//cout << "wall collision PLAYER x<" << endl;
+
+					if (worldOffset.x > prevOffset.x) {
+						worldOffset.x = prevOffset.x;
+					}
+				}
+				if (wallRBs[j]->GetMinGlobal().z < playerRB->GetCenterGlobal().z) {
+					//cout << "wall collision PLAYER z<" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z > prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+
+				}
+				if (wallRBs[j]->GetMaxGlobal().z > playerRB->GetCenterGlobal().z) {
+					//cout << "wall collision PLAYER z>" << endl;
+
+					//if the player is moving in that direction, stop them
+					if (worldOffset.z < prevOffset.z) {
+						worldOffset.z = prevOffset.z;
+					}
+				}
+			}
+		}
+		//list of bullets
 			for (int i = 0; i < bullets.size(); i++)
 			{
-				//check for collisions with all objects and if so destroy
+				//check for collisions with all objects and if so destroy  
+				
 				for (int j = 0; j < targetRBs.size(); j++)
 				{
 					if (bulletRBs.size() > i && IsColliding(bulletRBs[i], targetRBs[j]))
 					{
 						cout << "target collision" << endl;
+						//cycle to next target in list, and check if targets should loop back to 0
+						currentTarget++;
+						if (currentTarget > targetVectors.size() - 1)
+						{
+							currentTarget = 0;
+						}
 
 						score++;
 
@@ -184,6 +402,9 @@ void GLFWApp::Update(void)
 
 						break;
 					}
+
+					
+
 				}
 				
 				for (int j = 0; j < crateRBs.size(); j++)
@@ -195,6 +416,10 @@ void GLFWApp::Update(void)
 						RemoveBullet(i);
 
 						break;
+					}
+
+					if (IsColliding(playerRB, crateRBs[j])) {
+						cout << "crate collision PLAYER" << endl;
 					}
 				}
 
@@ -208,6 +433,10 @@ void GLFWApp::Update(void)
 
 						break;
 						//add bounce back?
+					}
+
+					if (IsColliding(playerRB, barrelRBs[j])) {
+						cout << "barrel collision PLAYER" << endl;
 					}
 					
 				}
@@ -223,9 +452,27 @@ void GLFWApp::Update(void)
 						
 						break;
 					}
+
+					if (IsColliding(playerRB,ammoPackRBs[j])) {
+						cout << "ammoPack collision PLAYER" << endl;
+					}
+				}
+				for (int j = 0; j < wallRBs.size(); j++)
+				{
+					if (bulletRBs.size() > i&& IsColliding(bulletRBs[i], wallRBs[j]))
+					{
+
+						RemoveBullet(i);
+
+						break;
+					}
+
+					if (IsColliding(playerRB, wallRBs[j])) {
+						cout << "wall collision PLAYER" << endl;
+					}
 				}
 			}
-		}
+
 		//if there are still bullets left, move them
 		if (bullets.size() > 0)
 		{
@@ -306,10 +553,28 @@ void GLFWApp::Display(void)
 		building->AddToRenderList();
 		building->SetModelMatrix(glm::translate(IDENTITY_M4, worldOffset));
 
+		
+
+
+		//set player RB
+
+		playerE->AddToRenderList();
+		playerE->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f))*glm::translate(IDENTITY_M4, vector3(0,5, 29)));
+
+
 		//set the scale matrix to shrink all the models
 		matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, .5f, .5f));
 
 		matrix4 m4Translate;
+
+		matrix4 m4Rotate;
+
+		m4Translate = glm::translate(IDENTITY_M4, vector3(0, 3 , 15));
+
+		//m4Rotate = glm::rotate(quaternion(IDENTITY_M4),m_pCameraMngr->GetForward());
+		
+		//gun->SetModelMatrix(m4Scale *m4Translate);
+		//gun->AddToRenderList();
 
 		for (size_t i = 0; i < crates.size(); i++)
 		{
@@ -356,6 +621,7 @@ void GLFWApp::Display(void)
 			barrels[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
 
+		/*
 		for (size_t i = 0; i < targets.size(); i++)
 		{
 			//change position for each one
@@ -389,6 +655,27 @@ void GLFWApp::Display(void)
 			targets[i]->AddToRenderList();
 			targets[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
+		*/
+		//process single target
+		m4Scale = glm::scale(IDENTITY_M4, vector3(0.5f, 0.5f, 0.5f));
+		m4Translate = glm::translate(IDENTITY_M4, targetVectors[currentTarget]);
+		m4Translate = glm::translate(m4Translate, worldOffset * 2); //adjust for world offset
+		m4Rotate = IDENTITY_M4;
+		if (currentTarget > 4 && currentTarget < 7)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, 3.14159f, vector3(0, 1, 0));
+		}
+		else if (currentTarget >= 7 && currentTarget < 9)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, -1.5708f, vector3(0, 1, 0));
+		}
+		else if(currentTarget >= 9)
+		{
+			m4Rotate = glm::rotate(IDENTITY_M4, 1.5708f, vector3(0, 1, 0));
+		}
+		
+		targets[0]->AddToRenderList();
+		targets[0]->SetModelMatrix(m4Scale* m4Translate * m4Rotate);
 
 		for (size_t i = 0; i < ammoPacks.size(); i++)
 		{
@@ -402,6 +689,61 @@ void GLFWApp::Display(void)
 			}
 			ammoPacks[i]->AddToRenderList();
 			ammoPacks[i]->SetModelMatrix(m4Scale * m4Translate);
+		}
+
+		for (size_t i = 0; i < walls.size(); i++)
+		{
+			//change position for each one
+			if (i == 0)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(5.31, 0, -10));
+			}
+			if (i == 1)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0, 0, -10));
+			}
+			if (i == 2)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-19, 0, 0));
+			}
+			if (i == 3)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-15, 0, 11));
+			}
+			if (i == 4)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-9.69, 0, 11));
+			}
+			if (i == 5)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(-4.38, 0, 11));
+			}
+			if (i == 6)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(0.93, 0, 11));
+			}
+			if (i == 7)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(13.69,0, 2));
+			}
+			if (i == 8)
+			{
+				//Translate wall
+				m4Translate = glm::translate(IDENTITY_M4, vector3(8.38, 0, 2));
+				
+			}
+			m4Scale = glm::scale(IDENTITY_M4, vector3(1));
+			m4Translate = glm::translate(m4Translate, worldOffset);
+			walls[i]->AddToRenderList();
+			walls[i]->SetModelMatrix(m4Scale * m4Translate);
 		}
 
 		/*for (size_t i = 0; i < m_pMeshMngr->GetMeshCount(); i++)
@@ -544,6 +886,7 @@ bool GLFWApp::IsColliding(RigidBody* rb, RigidBody* otherRB)
 	return true;
 }
 
+
 void GLFWApp::Release(void)
 {
 	//release variables
@@ -578,6 +921,12 @@ void GLFWApp::Release(void)
 	for each (Entity * a in ammoPacks)
 	{
 		SafeDelete(a);
+	}
+
+	//delete all barrels
+	for each (Entity * w in walls)
+	{
+		SafeDelete(w);
 	}
 
 	SafeDelete(menuBG);
