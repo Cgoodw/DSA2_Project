@@ -22,7 +22,7 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 	{
 		fSpeed = 1.0f;
 	}
-	
+	bool moveForward = false;
 	vector3 fwd = m_pCameraMngr->GetForward();
 	fwd = glm::normalize(fwd);
 	fwd.y = 0;
@@ -32,6 +32,9 @@ void GLFWApp::ProcessKeyboard(int key, int scancode, int action, int mods)
 	prevOffset = worldOffset;
 	if (key == GLFW_KEY_W)
 	{
+		if (moveForward) {
+			std::cout << "pp";
+		}
 		worldOffset -= (fwd*fSpeed);
 			
 	}

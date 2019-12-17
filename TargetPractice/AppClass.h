@@ -26,12 +26,20 @@ class GLFWApp
 	SystemSingleton* m_pSystem = nullptr;// Singleton of the system
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
+	EntityManager* m_pEntityManager = nullptr;
+	 
 
 	vector3 worldOffset = vector3(0, 0, 0);
 	vector3 prevOffset = vector3(0, 0, 0);
 
 	std::vector<int> keysPressed = std::vector<int>();
 	bool sprinting = 0;
+	//==TARGETS==
+
+	//store all possible target positions
+	std::vector<vector3> targetVectors;
+	//which position from list to use
+	int currentTarget = 0;
 
 	//current Scene number
 	int sceneNum = 0;
@@ -42,6 +50,16 @@ class GLFWApp
 	Simplex::Entity* crate = nullptr;
 	Simplex::Entity* target = nullptr;
 	Simplex::Entity* ammoPack = nullptr;
+
+	Simplex::Entity* gun = nullptr;
+
+
+	Simplex::Entity* wall = nullptr;
+	Simplex::RigidBody* wallRB = nullptr;
+
+	//the player's invisible hit box
+	Simplex::Entity* playerE = nullptr;
+	Simplex::RigidBody* playerRB = nullptr;
 
 	Simplex::RigidBody* buildingRB = nullptr;
 	Simplex::RigidBody* crateRB = nullptr;
@@ -57,10 +75,11 @@ class GLFWApp
 
 	//scene vars
 	int ammo = 30;
-	int numTargets = 3;
+	int numTargets = 1;
 	int numBarrels = 2;
 	int numCrates = 4;
 	int numAmmoPacks = 1;
+	int numWalls = 9;
 	int score = 0;
 	const float StartPos = 0.0f;
 	int currPos = 0.0f;
@@ -81,6 +100,9 @@ class GLFWApp
 	
 	std::vector<Entity*> ammoPacks = std::vector<Entity*>();
 	std::vector<RigidBody*> ammoPackRBs = std::vector<RigidBody*>();
+
+	std::vector<Entity*> walls = std::vector<Entity*>();
+	std::vector<RigidBody*> wallRBs = std::vector<RigidBody*>();
 
 public:
 	static GLFWApp* m_pSelfPointer; //Used for callbacks
@@ -179,6 +201,11 @@ private:
 
 	//checks for collision between two objects
 	bool IsColliding(RigidBody* rb, RigidBody* otherRB);
+
+	//checks for collision between player and other object
+	//returns the direction of collision
+	// 0=no collision  1=forawrd    2=backward  3left  4=right
+	//int IsCollidingPlayer(RigidBody* rb);
 	
 protected:
 	/*
